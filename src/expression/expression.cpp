@@ -1,5 +1,3 @@
 #include "expression.h"
 
-Expr::Expr(ExprType t) {
-  type = t;
-}
+Expr::Expr(ExprType t): type(t) {}

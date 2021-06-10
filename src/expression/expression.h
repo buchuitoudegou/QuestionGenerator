@@ -6,7 +6,8 @@ using std::string;
 
 enum ExprType {
   DECL=1,
-  COMP
+  COMP,
+  FUNC
 };
 
 enum VarType {
