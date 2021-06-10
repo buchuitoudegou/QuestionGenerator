@@ -8,10 +8,14 @@ Context::~Context() {
 Context::Context() {
   global_scope = new Scope();
   global_scope->is_function = false;
+}
+
+bool Context::define_main() {
   shared_ptr<Expr> main_decl(new FuncExpr("main", INT, vector<VarType>()));
   // todo: args should be added into vars of the scope
-  global_scope->scopes.push_back(std::make_shared<Scope>());
-  global_scope->scopes[0]->is_function = true;
+  shared_ptr<Scope> main_scope = std::make_shared<Scope>();
+  global_scope->scopes.push_back(main_scope);
+  main_scope->is_function = true;
   global_scope->exprs.push_back(main_decl);
   global_scope->child_scopes.insert(std::make_pair(main_decl.get(), global_scope->scopes[0].get()));
 }
@@ -34,7 +38,6 @@ bool Context::insert_main_arithmetic_comp(bool self_comp, CompType comp_type, Va
   if (self_comp) {
     global_scope->scopes[0]->gen_arithemetic_expr(idxs[0], idxs[1], -1, comp_type);
   } else {
-    int v3_idx = rand() % global_scope->scopes[0]->vars.size();
     global_scope->scopes[0]->gen_arithemetic_expr(idxs[0], idxs[1], idxs[2], comp_type);
   }
   return true;
