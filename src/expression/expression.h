@@ -27,6 +27,9 @@ public:
   Expr(ExprType t);
   virtual ~Expr() = default;
   virtual string stringify() = 0;
+  virtual string get_name() {
+    return "";
+  }
   ExprType type;
 };
 

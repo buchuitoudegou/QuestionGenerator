@@ -18,3 +18,7 @@ string FuncExpr::stringify() {
   code += func_name + "() {\n";
   return code;
 }
+
+string FuncExpr::get_name() {
+  return func_name;
+}
