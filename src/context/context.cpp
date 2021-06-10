@@ -26,19 +26,27 @@ string Context::code_gen() {
 
 bool Context::insert_main_arithmetic_comp(bool self_comp, CompType comp_type, VarType v_type) {
   int num = self_comp? 2: 3;
+  // find main scope
+  Scope* main_scope = NULL;
+  for (int i = 0; i < global_scope->exprs.size(); ++i) {
+    if (global_scope->exprs[i]->type == FUNC && global_scope->exprs[i]->get_name() == "main") {
+      main_scope = global_scope->child_scopes.find(global_scope->exprs[i].get())->second;
+      break;
+    }
+  }
   // find variables
   vector<int> idxs;
-  int lack = global_scope->scopes[0]->get_vars(idxs, num, v_type);
+  int lack = main_scope->get_vars(idxs, num, v_type);
   for (int i = 0; i < lack; ++i) {
-    global_scope->scopes[0]->declare_var(INT);
+    main_scope->declare_var(INT);
   }
   if (lack > 0) {
-    global_scope->scopes[0]->get_vars(idxs, num, INT);
+    main_scope->get_vars(idxs, num, INT);
   }
   if (self_comp) {
-    global_scope->scopes[0]->gen_arithemetic_expr(idxs[0], idxs[1], -1, comp_type);
+    main_scope->gen_arithemetic_expr(idxs[0], idxs[1], -1, comp_type);
   } else {
-    global_scope->scopes[0]->gen_arithemetic_expr(idxs[0], idxs[1], idxs[2], comp_type);
+    main_scope->gen_arithemetic_expr(idxs[0], idxs[1], idxs[2], comp_type);
   }
   return true;
 }
