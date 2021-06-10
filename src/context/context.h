@@ -41,7 +41,7 @@ public:
   ~Context();
   string code_gen();
   bool define_main();
-  bool insert_main_arithmetic_comp(bool self_incr, CompType comp_type,  VarType v_type);
+  bool insert_func_arithmetic_comp(bool self_incr, CompType comp_type, VarType v_type, const char* func_name);
   Scope* global_scope;
 };
 
