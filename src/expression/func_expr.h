@@ -12,6 +12,14 @@ public:
   string get_name();
   virtual ~FuncExpr() = default;
   VarType ret_type;
+  vector<VarType> args;
   string func_name;
+};
+
+class RetExpr: public Expr {
+public:
+  RetExpr(const char* v_name);
+  string stringify();
+  string v_name;
 };
 #endif

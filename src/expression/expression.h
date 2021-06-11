@@ -7,7 +7,9 @@ using std::string;
 enum ExprType {
   DECL=1,
   COMP,
-  FUNC
+  FUNC,
+  ASSIGN,
+  RET
 };
 
 enum VarType {
@@ -21,6 +23,8 @@ enum CompType {
   TIMES,
   DIV
 };
+
+string stringify_vartype(VarType vt);
 
 class Expr {
 public:
