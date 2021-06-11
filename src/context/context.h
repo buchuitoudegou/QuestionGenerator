@@ -23,8 +23,6 @@ public:
   vector<Variable> vars;
   vector<shared_ptr<Expr> > exprs;
   vector<shared_ptr<Scope> > scopes;
-  // vector<Scope> scopes;
-
   bool is_function;
   map<Expr*, Scope*> child_scopes;
   Scope();
@@ -41,7 +39,9 @@ public:
   ~Context();
   string code_gen();
   bool define_main();
+  bool define_udf(const char* func_name, vector<VarType>& args, VarType ret_type);
   bool insert_func_arithmetic_comp(bool self_incr, CompType comp_type, VarType v_type, const char* func_name);
+  // bool insert_func_ret_expr(const char* func_name);
   Scope* global_scope;
 };
 

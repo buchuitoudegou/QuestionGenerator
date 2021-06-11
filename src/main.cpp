@@ -9,7 +9,7 @@ using std::ofstream;
 
 int main() {
   srand(1);
-  int flags = LOGIC_COMP & BRANCH_SEL;
+  int flags = FUNC_DEF;
   Context* ctx = generate_context(flags);
   string code = code_generation(ctx);
   ofstream o_file;

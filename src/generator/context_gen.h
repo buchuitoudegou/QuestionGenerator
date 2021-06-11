@@ -4,6 +4,6 @@
 #include "../context/context.h"
 #include "../context/condition.h"
 
-Context* generate_context(uint8_t flags);
+Context* generate_context(uint16_t flags);
 
 #endif

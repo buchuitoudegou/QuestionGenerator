@@ -14,10 +14,27 @@ bool Context::define_main() {
   shared_ptr<Expr> main_decl(new FuncExpr("main", INT, vector<VarType>()));
   // todo: args should be added into vars of the scope
   shared_ptr<Scope> main_scope = std::make_shared<Scope>();
-  global_scope->scopes.push_back(main_scope);
   main_scope->is_function = true;
   global_scope->exprs.push_back(main_decl);
-  global_scope->child_scopes.insert(std::make_pair(main_decl.get(), global_scope->scopes[0].get()));
+  global_scope->scopes.push_back(main_scope);
+  global_scope->child_scopes.insert(std::make_pair(main_decl.get(), main_scope.get()));
+  return true;
+}
+
+bool Context::define_udf(const char* func_name, vector<VarType>& args, VarType ret_type) {
+  shared_ptr<Expr> func_decl(new FuncExpr(func_name, ret_type, args));
+  shared_ptr<Scope> func_scope(new Scope());
+  func_scope->is_function = true;
+  // add args to the current scope
+  for (int i = 0; i < args.size(); ++i) {
+    char temp = 'a' + func_scope->vars.size();
+    string arg_name;
+    arg_name.push_back(temp);
+    func_scope->vars.push_back(Variable(arg_name.c_str(), args[i]));
+  }
+  global_scope->exprs.push_back(func_decl);
+  global_scope->scopes.push_back(func_scope);
+  global_scope->child_scopes.insert(std::make_pair(func_decl.get(), func_scope.get()));
   return true;
 }
 
