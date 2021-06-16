@@ -10,6 +10,7 @@ Context* generate_context(uint16_t flags) {
     const char* func_name = "foo"; // supposed to be randomly generated
     context->define_udf(func_name, args, INT);
     context->insert_func_arithmetic_comp(false, PLUS, INT, "foo");
+    context->insert_func_ret_expr("foo");
   }
   context->define_main();
   context->insert_func_arithmetic_comp(true, PLUS, INT, "main");

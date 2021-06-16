@@ -13,12 +13,13 @@ enum ExprType {
 };
 
 enum VarType {
-  INT=3,
+  VOID=3,
+  INT,
   FLOAT,
 };
 
 enum CompType {
-  PLUS=5,
+  PLUS=6,
   SUB,
   TIMES,
   DIV
@@ -31,9 +32,8 @@ public:
   Expr(ExprType t);
   virtual ~Expr() = default;
   virtual string stringify() = 0;
-  virtual string get_name() {
-    return "";
-  }
+  virtual string get_name();
+  virtual VarType get_ret_type();
   ExprType type;
 };
 

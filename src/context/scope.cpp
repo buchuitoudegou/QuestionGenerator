@@ -25,6 +25,9 @@ bool Scope::declare_var(VarType v_type) {
 }
 
 int Scope::get_vars(vector<int>& ret, int num, VarType v_type) {
+  if (v_type == VOID) {
+    return 0;
+  }
   vector<int> all_vars;
   for (int i = 0; i < vars.size(); ++i) {
     if (vars[i].v_type == v_type) {
@@ -62,4 +65,10 @@ string Scope::code_gen() {
     }
   }
   return code;
+}
+
+bool Scope::gen_ret_expr(int idx) {
+  shared_ptr<Expr> ret_expr(new RetExpr(vars[idx].v_name.c_str()));
+  exprs.push_back(ret_expr);
+  return true;
 }

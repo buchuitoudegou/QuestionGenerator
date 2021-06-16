@@ -9,3 +9,11 @@ string stringify_vartype(VarType vt) {
   }
   return "";
 }
+
+string Expr::get_name() {
+  return "";
+}
+
+VarType Expr::get_ret_type() {
+  return VOID;
+}

@@ -72,3 +72,30 @@ bool Context::insert_func_arithmetic_comp(bool self_comp, CompType comp_type, Va
   }
   return true;
 }
+
+bool Context::insert_func_ret_expr(const char* func_name) {
+  Scope* func_scope = NULL;
+  VarType ret_type = INT;
+  for (int i = 0; i < global_scope->exprs.size(); ++i) {
+    if (global_scope->exprs[i]->type == FUNC && global_scope->exprs[i]->get_name() == func_name) {
+      func_scope = global_scope->child_scopes.find(global_scope->exprs[i].get())->second;
+      ret_type = global_scope->exprs[i]->get_ret_type();
+      break;
+    }
+  }
+  if (!func_scope) {
+    return false;
+  }
+  if (ret_type == VOID) {
+    // the function are supposed to return nothing
+    return true;
+  }
+  // find variables
+  vector<int> idxs;
+  int lack = func_scope->get_vars(idxs, 1, ret_type);
+  if (lack != 0) {
+    return false;
+  }
+  func_scope->gen_ret_expr(idxs[0]);
+  return true;
+}

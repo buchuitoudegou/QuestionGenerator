@@ -25,6 +25,10 @@ string FuncExpr::get_name() {
   return func_name;
 }
 
+VarType FuncExpr::get_ret_type() {
+  return this->ret_type;
+}
+
 RetExpr::RetExpr(const char* n): v_name(n), Expr(RET) {}
 
 string RetExpr::stringify() {
