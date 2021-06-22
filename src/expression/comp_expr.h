@@ -4,16 +4,21 @@
 #include "expression.h"
 #include "variable.h"
 
+class VarExpr: public Expr {
+public:
+  VarExpr(Variable v);
+  string stringify();
+  virtual ~VarExpr() = default;
+  Variable var;
+};
+
 class CompExpr: public Expr {
 public:
-  CompExpr(Variable v1, Variable v2, Variable dst, CompType type);
-  CompExpr(Variable v1, Variable v2, CompType type);
+  CompExpr(Expr* e1, Expr* e2, CompType t);
   string stringify();
-  virtual ~CompExpr() = default;
-  Variable op1;
-  Variable op2;
-  Variable dst;
-  bool self_comp;
+  virtual ~CompExpr();
+  Expr* e1;
+  Expr* e2;
   CompType comp_type;
 };
 #endif

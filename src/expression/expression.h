@@ -9,7 +9,8 @@ enum ExprType {
   COMP,
   FUNC,
   ASSIGN,
-  RET
+  RET,
+  VAR
 };
 
 enum VarType {
@@ -26,6 +27,7 @@ enum CompType {
 };
 
 string stringify_vartype(VarType vt);
+string stringify_comp(CompType ct);
 
 class Expr {
 public:

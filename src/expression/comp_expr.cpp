@@ -1,51 +1,21 @@
 #include "comp_expr.h"
 
-CompExpr::CompExpr(Variable v1, Variable v2, Variable v3, CompType t):
-  Expr(COMP), op1(v1), op2(v2), dst(v3), comp_type(t) {
-    self_comp = false;
-  }
+VarExpr::VarExpr(Variable v): Expr(VAR), var(v) {}
 
-CompExpr::CompExpr(Variable v1, Variable v2, CompType t):
-  Expr(COMP), op1(v1), op2(v2), dst(v2), comp_type(t) {
-    self_comp = true;
-  }
+string VarExpr::stringify() {
+  return var.v_name;
+}
+
+CompExpr::CompExpr(Expr* _e1, Expr* _e2, CompType c):
+  Expr(COMP), e1(_e1), e2(_e2), comp_type(c) {}
+
+CompExpr::~CompExpr() {
+  delete e1;
+  delete e2;
+}
 
 string CompExpr::stringify() {
-  string code = "";
-  switch (comp_type) {
-    case PLUS: {
-      if (self_comp) {
-        code += op2.v_name + " += " + op1.v_name;
-      } else {
-        code += dst.v_name + " = " + op1.v_name + " + " + op2.v_name;
-      }
-      break;
-    }
-    case SUB: {
-      if (self_comp) {
-        code += op2.v_name + " -= " + op1.v_name;
-      } else {
-        code += dst.v_name + " = " + op1.v_name + " - " + op2.v_name;
-      }
-      break;
-    }
-    case TIMES: {
-      if (self_comp) {
-        code += op2.v_name + " *= " + op1.v_name;
-      } else {
-        code += dst.v_name + " = " + op1.v_name + " * " + op2.v_name;
-      }
-      break;
-    }
-    case DIV: {
-      if (self_comp) {
-        code += op2.v_name + " /= " + op1.v_name;
-      } else {
-        code += dst.v_name + " = " + op1.v_name + " / " + op2.v_name;
-      }
-      break;
-    }
-  }
-  code += ";\n";
-  return code;
+  return e1->stringify() + " "
+    + stringify_comp(comp_type) + " "
+    + e2->stringify();
 }

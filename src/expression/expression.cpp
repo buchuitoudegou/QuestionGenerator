@@ -9,6 +9,15 @@ string stringify_vartype(VarType vt) {
   }
   return "";
 }
+string stringify_comp(CompType ct) {
+  switch (ct) {
+    case PLUS: return "+";
+    case SUB: return "-";
+    case TIMES: return "*";
+    case DIV: return "/";
+  }
+  return "";
+}
 
 string Expr::get_name() {
   return "";
