@@ -8,7 +8,7 @@
 using std::ofstream;
 
 int main() {
-  srand(1);
+  srand(10);
   int flags = FUNC_DEF;
   Context* ctx = generate_context(flags);
   string code = code_generation(ctx);
