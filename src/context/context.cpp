@@ -42,47 +42,42 @@ string Context::code_gen() {
   return global_scope->code_gen();
 }
 
-bool Context::insert_func_arithmetic_comp(bool self_comp, CompType comp_type, VarType v_type, const char* func_name) {
-  int num = self_comp? 2: 3;
+ Expr* Context::def_simple_comp(VarType v1, VarType v2, CompType ct, string func_name) {
   // find func scope
-  Scope* func_scope = NULL;
-  for (int i = 0; i < global_scope->exprs.size(); ++i) {
-    if (global_scope->exprs[i]->type == FUNC && global_scope->exprs[i]->get_name() == func_name) {
-      func_scope = global_scope->child_scopes.find(global_scope->exprs[i].get())->second;
-      break;
+  Scope* func_scope = get_func_scope(func_name);
+  if (!func_scope) {
+    // not successful
+    return NULL;
+  }
+  vector<int> var_idx;
+  if (v1 == v2) {
+    int lack = func_scope->get_vars(var_idx, 2, v1);
+    if (lack > 0) {
+      return NULL;
+    }
+  } else {
+    vector<int> var_idx;
+    int lack = func_scope->get_vars(var_idx, 1, v1);
+    if (lack > 0) {
+      return NULL;
+    }
+    lack = func_scope->get_vars(var_idx, 1, v2);
+    if (lack > 0) {
+      return NULL;
     }
   }
-  if (!func_scope) {
-    return false;
-  }
-  // find variables
-  vector<int> idxs;
-  int lack = func_scope->get_vars(idxs, num, v_type);
-  // define new variable
-  for (int i = 0; i < lack; ++i) {
-    func_scope->declare_var(INT);
-  }
-  if (lack > 0) {
-    func_scope->get_vars(idxs, num, INT);
-  }
-  if (self_comp) {
-    func_scope->gen_arithemetic_expr(idxs[0], idxs[1], -1, comp_type);
-  } else {
-    func_scope->gen_arithemetic_expr(idxs[0], idxs[1], idxs[2], comp_type);
-  }
-  return true;
+  CompExpr* ret = new CompExpr(
+    new VarExpr(func_scope->vars[var_idx[0]]),
+    new VarExpr(func_scope->vars[var_idx[1]]),
+    ct
+  );
+  return ret;
 }
 
 bool Context::insert_func_ret_expr(const char* func_name) {
   Scope* func_scope = NULL;
   VarType ret_type = INT;
-  for (int i = 0; i < global_scope->exprs.size(); ++i) {
-    if (global_scope->exprs[i]->type == FUNC && global_scope->exprs[i]->get_name() == func_name) {
-      func_scope = global_scope->child_scopes.find(global_scope->exprs[i].get())->second;
-      ret_type = global_scope->exprs[i]->get_ret_type();
-      break;
-    }
-  }
+  func_scope = get_func_scope(func_name);
   if (!func_scope) {
     return false;
   }
@@ -98,4 +93,37 @@ bool Context::insert_func_ret_expr(const char* func_name) {
   }
   func_scope->gen_ret_expr(idxs[0]);
   return true;
+}
+
+Variable Context::get_var(VarType v1, string func_name) {
+  vector<int> idx;
+  Scope* func_scope = get_func_scope(func_name);
+  if (func_scope) {
+    int lack = func_scope->get_vars(idx, 1, v1);
+    if (lack > 0) {
+      return Variable("", VOID);
+    }
+    return func_scope->vars[idx[0]];
+  }
+  return Variable("", VOID);
+}
+
+bool Context::insert_func_norm_expr(const char* func_name, Expr* e) {
+  Scope* func_scope = get_func_scope(func_name);
+  if (!func_scope) {
+    return false;
+  }
+  func_scope->insert_expr(e);
+  return true;
+}
+
+Scope* Context::get_func_scope(string func_name) {
+  Scope* func_scope = NULL;
+  for (int i = 0; i < global_scope->exprs.size(); ++i) {
+    if (global_scope->exprs[i]->type == FUNC && global_scope->exprs[i]->get_name() == func_name) {
+      func_scope = global_scope->child_scopes.find(global_scope->exprs[i].get())->second;
+      break;
+    }
+  }
+  return func_scope;
 }

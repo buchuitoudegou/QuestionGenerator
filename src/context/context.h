@@ -30,11 +30,13 @@ public:
   string code_gen();
   bool declare_var(VarType v_type);
   int get_vars(vector<int>& ret, int num, VarType v_type);
-  bool gen_arithemetic_expr(int idx1, int idx2, int idx3, CompType comp_type);
   bool gen_ret_expr(int idx);
+  bool insert_expr(Expr* expr);
 };
 
 class Context {
+private:
+  Scope* get_func_scope(string func_name);
 public:
   Context();
   ~Context();
@@ -43,10 +45,14 @@ public:
   bool define_main();
   // define a udf
   bool define_udf(const char* func_name, vector<VarType>& args, VarType ret_type);
-  // insert arithemetic computation expression between randomly selected variable to a specific function
-  bool insert_func_arithmetic_comp(bool self_incr, CompType comp_type, VarType v_type, const char* func_name);
- // insert a function return expression that returns a random variable
+  // define simple computation between two vars
+  Expr* def_simple_comp(VarType v1, VarType v2, CompType ct, string func_name);
+  // get certain type of variable 
+  Variable get_var(VarType v1, string func_name);
+  // insert a function return expression that returns a random variable
   bool insert_func_ret_expr(const char* func_name);
+  // insert a normal expression to function
+  bool insert_func_norm_expr(const char* func_name, Expr* e);
   Scope* global_scope;
 };
 

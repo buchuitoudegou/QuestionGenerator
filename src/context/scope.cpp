@@ -43,14 +43,9 @@ int Scope::get_vars(vector<int>& ret, int num, VarType v_type) {
   return 0;
 }
 
-bool Scope::gen_arithemetic_expr(int idx1, int idx2, int idx3, CompType comp_type) {
-  if (idx3 > 0) {
-    shared_ptr<Expr> comp_expr(new CompExpr(vars[idx1], vars[idx2], vars[idx3], comp_type));
-    exprs.push_back(comp_expr);
-  } else {
-    shared_ptr<Expr> comp_expr(new CompExpr(vars[idx1], vars[idx2], comp_type));
-    exprs.push_back(comp_expr);
-  }
+bool Scope::insert_expr(Expr* e1) {
+  shared_ptr<Expr> e(e1);
+  exprs.push_back(e);
   return true;
 }
 

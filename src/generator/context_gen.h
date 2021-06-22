@@ -3,6 +3,7 @@
 
 #include "../context/context.h"
 #include "../context/condition.h"
+#include "../expression/assign_expr.h"
 
 Context* generate_context(uint16_t flags);
 
