@@ -8,8 +8,9 @@
 using std::ofstream;
 
 int main() {
-  srand(10);
-  int flags = FUNC_DEF;
+  srand(time(NULL));
+  // int flags = FUNC_DEF | FUNC_ARTH | ARTH;
+  int flags = ARTH | WHILE_LOOP;
   Context* ctx = generate_context(flags);
   string code = code_generation(ctx);
   ofstream o_file;

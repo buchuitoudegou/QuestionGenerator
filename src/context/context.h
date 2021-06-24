@@ -11,6 +11,7 @@
 #include "../expression/decl_expr.h"
 #include "../expression/variable.h"
 #include "../expression/comp_expr.h"
+#include "../expression/while_expr.h"
 
 using std::vector;
 using std::string;
@@ -28,7 +29,7 @@ public:
   Scope();
   ~Scope();
   string code_gen();
-  bool declare_var(VarType v_type);
+  bool declare_var(VarType v_type, string v_name="");
   int get_vars(vector<int>& ret, int num, VarType v_type);
   bool gen_ret_expr(int idx);
   bool insert_expr(Expr* expr);
@@ -41,18 +42,22 @@ public:
   Context();
   ~Context();
   string code_gen();
+  // get certain type of variable 
+  Variable get_var(VarType v1, string func_name);
   // declare and define main
   bool define_main();
   // define a udf
   bool define_udf(const char* func_name, vector<VarType>& args, VarType ret_type);
-  // define simple computation between two vars
-  Expr* def_simple_comp(VarType v1, VarType v2, CompType ct, string func_name);
-  // get certain type of variable 
-  Variable get_var(VarType v1, string func_name);
+  // define new variable in function
+  bool def_func_var(string func_name, VarType vt, string vn="");
   // insert a function return expression that returns a random variable
   bool insert_func_ret_expr(const char* func_name);
   // insert a normal expression to function
   bool insert_func_norm_expr(const char* func_name, Expr* e);
+  // insert a while block to function
+  Expr* insert_while(Expr* ctrl_expr, string func_name);
+  // insert expressions to a while block
+  bool insert_while_exprs(Expr* we, string func_name, vector<Expr*> exprs);
   Scope* global_scope;
 };
 

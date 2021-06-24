@@ -21,4 +21,16 @@ public:
   Expr* e2;
   CompType comp_type;
 };
+
+class SelfCompExpr: public Expr {
+public:
+  SelfCompExpr(Variable v, CompType t, Expr* e1);
+  SelfCompExpr(Variable v, CompType t, const char* constant);
+  virtual ~SelfCompExpr();
+  string stringify();
+  Expr* e;
+  string constant;
+  CompType comp_type;
+  Variable v;
+};
 #endif

@@ -4,10 +4,13 @@ Scope::~Scope() {}
 
 Scope::Scope() {}
 
-bool Scope::declare_var(VarType v_type) {
+bool Scope::declare_var(VarType v_type, string vn) {
   char _v = 'a' + vars.size();
   string v_name;
   v_name.push_back(_v);
+  if (vn != "") {
+    v_name = vn;
+  }
   vars.push_back(Variable(v_name.c_str(), v_type));
   if (v_type == INT) {
     int init = rand() % 10;
