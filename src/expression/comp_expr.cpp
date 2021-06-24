@@ -44,3 +44,9 @@ SelfCompExpr::~SelfCompExpr() {
     delete e;
   }
 }
+
+ConstExpr::ConstExpr(const char* c): Expr(VAR), c(c) {}
+
+string ConstExpr::stringify() {
+  return c;
+}

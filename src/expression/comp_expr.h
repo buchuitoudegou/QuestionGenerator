@@ -12,6 +12,13 @@ public:
   Variable var;
 };
 
+class ConstExpr: public Expr {
+public:
+  ConstExpr(const char* c);
+  string stringify();
+  const char* c;
+};
+
 class CompExpr: public Expr {
 public:
   CompExpr(Expr* e1, Expr* e2, CompType t);

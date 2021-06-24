@@ -38,40 +38,44 @@ bool Context::define_udf(const char* func_name, vector<VarType>& args, VarType r
   return true;
 }
 
+Expr* Context::insert_while(Expr* ctrl_expr, string func_name) {
+  Scope* func_scope = get_func_scope(func_name);
+  if (!func_scope) {
+    return NULL;
+  }
+  shared_ptr<Expr> while_expr(new WhileExpr(ctrl_expr));
+  shared_ptr<Scope> while_scope(new Scope());
+  while_scope->is_function = false;
+  while_scope->vars = func_scope->vars;
+  func_scope->exprs.push_back(while_expr);
+  func_scope->scopes.push_back(while_scope);
+  func_scope->child_scopes.insert(std::make_pair(while_expr.get(), while_scope.get()));
+  return while_expr.get();
+}
+
+bool Context::insert_while_exprs(Expr* we, string func_name, vector<Expr*> exprs) {
+  Scope* func_scope = get_func_scope(func_name);
+  if (!func_scope) {
+    return false;
+  }
+  Scope* while_scope = func_scope->child_scopes.find(we)->second;
+  for (int i = 0; i < exprs.size(); ++i) {
+    while_scope->insert_expr(exprs[i]);
+  }
+  return true;
+}
+
 string Context::code_gen() {
   return global_scope->code_gen();
 }
 
- Expr* Context::def_simple_comp(VarType v1, VarType v2, CompType ct, string func_name) {
-  // find func scope
+bool Context::def_func_var(string func_name, VarType vt, string vn) {
   Scope* func_scope = get_func_scope(func_name);
   if (!func_scope) {
-    // not successful
-    return NULL;
+    return false;
   }
-  vector<int> var_idx;
-  if (v1 == v2) {
-    int lack = func_scope->get_vars(var_idx, 2, v1);
-    if (lack > 0) {
-      return NULL;
-    }
-  } else {
-    vector<int> var_idx;
-    int lack = func_scope->get_vars(var_idx, 1, v1);
-    if (lack > 0) {
-      return NULL;
-    }
-    lack = func_scope->get_vars(var_idx, 1, v2);
-    if (lack > 0) {
-      return NULL;
-    }
-  }
-  CompExpr* ret = new CompExpr(
-    new VarExpr(func_scope->vars[var_idx[0]]),
-    new VarExpr(func_scope->vars[var_idx[1]]),
-    ct
-  );
-  return ret;
+  func_scope->declare_var(vt, vn);
+  return true;
 }
 
 bool Context::insert_func_ret_expr(const char* func_name) {

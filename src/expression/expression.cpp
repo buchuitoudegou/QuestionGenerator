@@ -19,6 +19,17 @@ string stringify_comp(CompType ct) {
   return "";
 }
 
+string stringify_bool_type(CompareType ct) {
+  switch (ct) {
+    case EQUAL: return "==";
+    case LARGER: return ">";
+    case LESS: return "<";
+    case NO_LARGER: return ">=";
+    case NO_LESS: return "<=";
+  }
+  return "";
+}
+
 string Expr::get_name() {
   return "";
 }

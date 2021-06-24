@@ -14,4 +14,15 @@ public:
   virtual ~AssignExpr();
 };
 
+// variable > / < / == Expr
+class BoolExpr: public Expr {
+public:
+  Variable v;
+  CompareType ct;
+  Expr* right_expr;
+  string stringify();
+  BoolExpr(Variable v, Expr* e, CompareType ct);
+  virtual ~BoolExpr();
+};
+
 #endif

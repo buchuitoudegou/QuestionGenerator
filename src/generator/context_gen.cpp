@@ -17,7 +17,8 @@ Context* generate_context(uint16_t flags) {
     context->define_udf(func_name, args, INT); // ret type should be randomized
     decl_var(context, INT, "foo");
     if (flags & FUNC_ARTH) {
-      gen_arth(context, INT, "foo");
+      Expr* ret = gen_arth(context, INT, "foo");
+      context->insert_func_norm_expr("foo", ret);
     }
     context->insert_func_ret_expr("foo");
   }
@@ -25,7 +26,8 @@ Context* generate_context(uint16_t flags) {
   if (flags & ARTH) {
     decl_var(context, INT, "main");
     decl_var(context, INT, "main");
-    gen_arth(context, INT, "main");
+    Expr* ret = gen_arth(context, INT, "main");
+    context->insert_func_norm_expr("main", ret);
   }
   if (flags & WHILE_LOOP) {
     gen_while(context, "main", 3);
@@ -33,14 +35,14 @@ Context* generate_context(uint16_t flags) {
   return context;
 }
 
-bool gen_arth(Context* ctx, VarType vt, string func_name)  {
+Expr* gen_arth(Context* ctx, VarType vt, string func_name)  {
   int arg_num = rand() % 2 + 2;
   vector<VarExpr*> vs;
   vector<CompType> cs;
   for (int i = 0; i < arg_num; ++i) {
     Variable v = ctx->get_var(vt, func_name);
     if (v.v_name == "") {
-      return false;
+      return nullptr;
     }
     vs.push_back(new VarExpr(v));
     if (i != 0) {
@@ -55,14 +57,25 @@ bool gen_arth(Context* ctx, VarType vt, string func_name)  {
   }
   Variable dst = ctx->get_var(vt, func_name);
   AssignExpr* ret = new AssignExpr(dst, prev);
-  ctx->insert_func_norm_expr(func_name.c_str(), ret);
-  return true;
+  // ctx->insert_func_norm_expr(func_name.c_str(), ret);
+  return ret;
 }
 
 bool decl_var(Context* ctx, VarType vt, string func_name, string vn) {
   ctx->def_func_var(func_name, vt);
 }
 
-bool gen_while(Context* ctx, string func_name) {
-  
+Expr* gen_while(Context* ctx, string func_name, int arth_num) {
+  Variable v = ctx->get_var(INT, func_name);
+  Expr* ce = new ConstExpr("4");
+  Expr* ctrl_expr = new BoolExpr(v, ce, LARGER);
+  Expr* we = ctx->insert_while(ctrl_expr, func_name);
+  vector<Expr*> arths;
+  for (int i = 0; i < arth_num; ++i) {
+    // int type = rand() % 2;
+    Expr* temp = gen_arth(ctx, INT, func_name);
+    arths.push_back(temp);
+  }
+  ctx->insert_while_exprs(we, func_name, arths);
+  return we;
 }

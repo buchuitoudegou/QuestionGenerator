@@ -9,14 +9,25 @@ enum ExprType {
   COMP,
   FUNC,
   ASSIGN,
+  BOOL,
   RET,
-  VAR
+  VAR,
+  WHILE,
+  FOR
 };
 
 enum VarType {
   VOID=3,
   INT,
   FLOAT,
+};
+
+enum CompareType {
+  EQUAL, // ==
+  LARGER, // >
+  LESS, // <
+  NO_LESS, // >=
+  NO_LARGER, // <=
 };
 
 enum CompType {
@@ -28,6 +39,7 @@ enum CompType {
 
 string stringify_vartype(VarType vt);
 string stringify_comp(CompType ct);
+string stringify_bool_type(CompareType ct);
 
 class Expr {
 public:

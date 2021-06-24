@@ -7,10 +7,11 @@
 
 Context* generate_context(uint16_t flags);
 
-bool gen_arth(Context* ctx, VarType vt, string func_name);
+Expr* gen_arth(Context* ctx, VarType vt, string func_name);
+
+Expr* gen_while(Context* ctx, string func_name, int arth_num);
 
 bool decl_var(Context* ctx, VarType vt, string func_name, string vn="");
 
-bool gen_while(Context* ctx, string func_name, int arth_num);
 
 #endif
