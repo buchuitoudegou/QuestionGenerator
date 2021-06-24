@@ -32,5 +32,5 @@ VarType FuncExpr::get_ret_type() {
 RetExpr::RetExpr(const char* n): v_name(n), Expr(RET) {}
 
 string RetExpr::stringify() {
-  return "return " + v_name + ";\n";
+  return "return " + v_name;
 }

@@ -40,6 +40,7 @@ enum CompType {
 string stringify_vartype(VarType vt);
 string stringify_comp(CompType ct);
 string stringify_bool_type(CompareType ct);
+bool need_semicolon(ExprType type);
 
 class Expr {
 public:

@@ -56,9 +56,11 @@ string Scope::code_gen() {
   string code = "";
   for (int i = 0; i < exprs.size(); ++i) {
     code += exprs[i]->stringify();
+    if (need_semicolon(exprs[i]->type)) {
+      code += ";\n";
+    }
     map<Expr*, Scope*>::iterator it = child_scopes.find(exprs[i].get());
     if (it != child_scopes.end()) {
-      printf("%s\n", exprs[i]->stringify().c_str());
       code += it->second->code_gen();
       code += "}\n";
     }

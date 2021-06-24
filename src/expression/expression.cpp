@@ -37,3 +37,11 @@ string Expr::get_name() {
 VarType Expr::get_ret_type() {
   return VOID;
 }
+
+bool need_semicolon(ExprType type) {
+  if (type == WHILE || type == FOR || type == FUNC) {
+    return false;
+  } else {
+    return true;
+  }
+}

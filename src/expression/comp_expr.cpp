@@ -33,9 +33,9 @@ SelfCompExpr::SelfCompExpr(Variable v, CompType t, const char* c):
 string SelfCompExpr::stringify() {
   string base = v.v_name + " " + stringify_comp(comp_type) + "= ";
   if (e) {
-    return base + e->stringify() + ";\n";
+    return base + e->stringify();
   } else {
-    return base + constant + ";\n";
+    return base + constant;
   }
 }
 
