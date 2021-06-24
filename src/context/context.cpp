@@ -53,6 +53,21 @@ Expr* Context::insert_while(Expr* ctrl_expr, string func_name) {
   return while_expr.get();
 }
 
+Expr* Context::insert_for(Expr* for_expr, string func_name) {
+  Scope* func_scope = get_func_scope(func_name);
+  if (!func_scope) {
+    return NULL;
+  }
+  shared_ptr<Expr> fe(for_expr);
+  shared_ptr<Scope> for_scope(new Scope());
+  for_scope->is_function = false;
+  for_scope->vars = func_scope->vars;
+  func_scope->exprs.push_back(fe);
+  func_scope->scopes.push_back(for_scope);
+  func_scope->child_scopes.insert(std::make_pair(fe.get(), for_scope.get()));
+  return fe.get();
+}
+
 bool Context::insert_while_exprs(Expr* we, string func_name, vector<Expr*> exprs) {
   Scope* func_scope = get_func_scope(func_name);
   if (!func_scope) {
@@ -61,6 +76,18 @@ bool Context::insert_while_exprs(Expr* we, string func_name, vector<Expr*> exprs
   Scope* while_scope = func_scope->child_scopes.find(we)->second;
   for (int i = 0; i < exprs.size(); ++i) {
     while_scope->insert_expr(exprs[i]);
+  }
+  return true;
+}
+
+bool Context::insert_for_exprs(Expr* fe, string func_name, vector<Expr*> exprs) {
+  Scope* func_scope = get_func_scope(func_name);
+  if (!func_scope) {
+    return false;
+  }
+  Scope* for_scope = func_scope->child_scopes.find(fe)->second;
+  for (int i = 0; i < exprs.size(); ++i) {
+    for_scope->insert_expr(exprs[i]);
   }
   return true;
 }

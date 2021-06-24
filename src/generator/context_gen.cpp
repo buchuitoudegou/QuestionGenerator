@@ -32,6 +32,9 @@ Context* generate_context(uint16_t flags) {
   if (flags & WHILE_LOOP) {
     gen_while(context, "main", 3);
   }
+  if (flags & FOR_LOOP) {
+    gen_for(context, "main", 4);
+  }
   return context;
 }
 
@@ -61,7 +64,7 @@ Expr* gen_arth(Context* ctx, VarType vt, string func_name)  {
   return ret;
 }
 
-bool decl_var(Context* ctx, VarType vt, string func_name, string vn) {
+bool decl_var(Context* ctx, VarType vt, string func_name) {
   ctx->def_func_var(func_name, vt);
 }
 
@@ -78,4 +81,20 @@ Expr* gen_while(Context* ctx, string func_name, int arth_num) {
   }
   ctx->insert_while_exprs(we, func_name, arths);
   return we;
+}
+
+Expr* gen_for(Context* ctx, string func_name, int arth_num) {
+  Expr* init = new DeclExpr("i", INT, "0");
+  Expr* ctrl = new BoolExpr(Variable("i", INT), new ConstExpr("10"), LESS);
+  Expr* iter = new SelfCompExpr(Variable("i", INT), PLUS, "1");
+  Expr* for_expr = new ForExpr(init, ctrl, iter);
+  Expr* fe = ctx->insert_for(for_expr, func_name);
+  vector<Expr*> arths;
+  for (int i = 0; i < arth_num; ++i) {
+    // int type = rand() % 2;
+    Expr* temp = gen_arth(ctx, INT, func_name);
+    arths.push_back(temp);
+  }
+  ctx->insert_while_exprs(fe, func_name, arths);
+  return fe;
 }

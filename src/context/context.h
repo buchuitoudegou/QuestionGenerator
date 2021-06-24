@@ -58,6 +58,10 @@ public:
   Expr* insert_while(Expr* ctrl_expr, string func_name);
   // insert expressions to a while block
   bool insert_while_exprs(Expr* we, string func_name, vector<Expr*> exprs);
+  // insert a for block to function
+  Expr* insert_for(Expr* for_expr, string func_name);
+  // insert expressions to a for block
+  bool insert_for_exprs(Expr* fe, string func_name, vector<Expr*> exprs);
   Scope* global_scope;
 };
 

@@ -10,7 +10,7 @@ using std::ofstream;
 int main() {
   srand(time(NULL));
   // int flags = FUNC_DEF | FUNC_ARTH | ARTH;
-  int flags = ARTH | WHILE_LOOP;
+  int flags = ARTH | WHILE_LOOP | FOR_LOOP;
   Context* ctx = generate_context(flags);
   string code = code_generation(ctx);
   ofstream o_file;
