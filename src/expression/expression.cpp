@@ -15,6 +15,7 @@ string stringify_comp(CompType ct) {
     case SUB: return "-";
     case TIMES: return "*";
     case DIV: return "/";
+    case MOD: return "%";
   }
   return "";
 }

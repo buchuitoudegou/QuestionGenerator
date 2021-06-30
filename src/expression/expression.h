@@ -35,7 +35,8 @@ enum CompType {
   PLUS=6,
   SUB,
   TIMES,
-  DIV
+  DIV,
+  MOD
 };
 
 string stringify_vartype(VarType vt);
