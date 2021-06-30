@@ -2,16 +2,18 @@
 #define __CONDITION_H__
 
 // 16-bit flags controlling the features of the code
-#define LOGIC_COMP 0x1
-#define BRANCH_SEL 0x2
-#define MACRO 0x4
-#define STATIC_VAR 0x8
-#define WHILE_LOOP 0x10
-#define FOR_LOOP 0x20
-#define FUNC_CALL 0x40
-#define FUNC_DEF 0x80
-#define FUNC_ARTH 0x100
-#define ARTH 0x200
+#define IF 0x1
+#define WHILE 0x2
+#define FOR 0x4
+#define CMP_ASGN 0x8
+#define CPLX_CND 0x10
+#define SLF_INC 0x20
+#define RDT_STM 0x40
+#define C_CND 0x80
+#define VC_CND 0x100
+#define VV_CND 0x200
+#define NST_BLK 0x400
+
 // question generation: question form
 #define MCQ 0x1
 #define FILL_BLK 0x2
