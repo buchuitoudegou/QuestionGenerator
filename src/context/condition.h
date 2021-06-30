@@ -2,17 +2,17 @@
 #define __CONDITION_H__
 
 // 16-bit flags controlling the features of the code
-#define IF 0x1
-#define WHILE 0x2
-#define FOR 0x4
-#define CMP_ASGN 0x8
-#define CPLX_CND 0x10
-#define SLF_INC 0x20
-#define RDT_STM 0x40
-#define C_CND 0x80
-#define VC_CND 0x100
-#define VV_CND 0x200
-#define NST_BLK 0x400
+#define IF 0x1        // if expression
+#define WHILE 0x2     // while expression
+#define FOR 0x4       // for expression
+#define CMP_ASGN 0x8  // compound calculation
+#define CPLX_CND 0x10 // complex condition (&& ||)
+#define SLF_INC 0x20  // self increment/decrement
+#define RDT_STM 0x40  // reduncdant statement
+#define C_CND 0x80    // constant condition
+#define VC_CND 0x100  // variable-constant condition
+#define VV_CND 0x200  // variable-variable condition
+#define NST_BLK 0x400 // nested block
 
 // question generation: question form
 #define MCQ 0x1
