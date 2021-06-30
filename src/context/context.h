@@ -55,17 +55,9 @@ public:
   // insert a normal expression to function
   bool insert_func_norm_expr(const char* func_name, Expr* e);
   // insert a while block to function
-  Expr* insert_while(Expr* ctrl_expr, string func_name);
+  Expr* insert_scope_expr(Expr* expr, string func_name, Expr* nst_expr=nullptr);
   // insert expressions to a while block
-  bool insert_while_exprs(Expr* we, string func_name, vector<Expr*> exprs);
-  // insert a for block to function
-  Expr* insert_for(Expr* for_expr, string func_name);
-  // insert expressions to a for block
-  bool insert_for_exprs(Expr* fe, string func_name, vector<Expr*> exprs);
-  // insert a if block to function
-  Expr* insert_if(Expr* ife, string func_name);
-  // insert expressions to a if block
-  bool insert_if_exprs(Expr* ife, string func_name, vector<Expr*> exprs);
+  bool insert_exprs_to_scope(Expr* we, string func_name, vector<Expr*> exprs);
   Scope* global_scope;
 };
 
