@@ -27,23 +27,16 @@ bool Scope::declare_var(VarType v_type, string vn) {
   return true;
 }
 
-int Scope::get_vars(vector<int>& ret, int num, VarType v_type) {
+bool Scope::get_vars(vector<int>& ret, VarType v_type) {
   if (v_type == VOID) {
-    return 0;
+    return false;
   }
-  vector<int> all_vars;
   for (int i = 0; i < vars.size(); ++i) {
     if (vars[i].v_type == v_type) {
-      all_vars.push_back(i);
+      ret.push_back(i);
     }
   }
-  if (all_vars.size() < num) {
-    return num - all_vars.size();
-  }
-  for (int i = 0; i < num; ++i) {
-    ret.push_back(rand() % all_vars.size());
-  }
-  return 0;
+  return true;
 }
 
 bool Scope::insert_expr(Expr* e1) {

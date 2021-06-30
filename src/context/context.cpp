@@ -68,6 +68,22 @@ Expr* Context::insert_for(Expr* for_expr, string func_name) {
   return fe.get();
 }
 
+
+Expr* Context::insert_if(Expr* _ife, string func_name) {
+  Scope* func_scope = get_func_scope(func_name);
+  if (!func_scope) {
+    return nullptr;
+  }
+  shared_ptr<Expr> ife(_ife);
+  shared_ptr<Scope> if_scope(new Scope());
+  if_scope->is_function = false;
+  if_scope->vars = func_scope->vars;
+  func_scope->exprs.push_back(ife);
+  func_scope->scopes.push_back(if_scope);
+  func_scope->child_scopes.insert(std::make_pair(ife.get(), if_scope.get()));
+  return ife.get();
+}
+
 bool Context::insert_while_exprs(Expr* we, string func_name, vector<Expr*> exprs) {
   Scope* func_scope = get_func_scope(func_name);
   if (!func_scope) {
@@ -92,6 +108,18 @@ bool Context::insert_for_exprs(Expr* fe, string func_name, vector<Expr*> exprs) 
   return true;
 }
 
+bool Context::insert_if_exprs(Expr* ife, string func_name, vector<Expr*> exprs) {
+  Scope* func_scope = get_func_scope(func_name);
+  if (!func_scope) {
+    return false;
+  }
+  Scope* for_scope = func_scope->child_scopes.find(ife)->second;
+  for (int i = 0; i < exprs.size(); ++i) {
+    for_scope->insert_expr(exprs[i]);
+  }
+  return true;
+}
+
 string Context::code_gen() {
   return global_scope->code_gen();
 }
@@ -105,7 +133,7 @@ bool Context::def_func_var(string func_name, VarType vt, string vn) {
   return true;
 }
 
-bool Context::insert_func_ret_expr(const char* func_name) {
+bool Context::insert_func_ret_expr(const char* func_name, const char* v_name) {
   Scope* func_scope = NULL;
   VarType ret_type = INT;
   func_scope = get_func_scope(func_name);
@@ -118,25 +146,39 @@ bool Context::insert_func_ret_expr(const char* func_name) {
   }
   // find variables
   vector<int> idxs;
-  int lack = func_scope->get_vars(idxs, 1, ret_type);
-  if (lack != 0) {
-    return false;
+  func_scope->get_vars(idxs, ret_type);
+  if (idxs.size() > 0) {
+    int target = -1;
+    for (auto idx: idxs) {
+      if (func_scope->vars[idx].v_name == v_name) {
+        target = idx;
+        break;
+      }
+    }
+    if (target != -1) {
+      func_scope->gen_ret_expr(target);
+      return true;
+    } else {
+      return false;
+    }
   }
-  func_scope->gen_ret_expr(idxs[0]);
-  return true;
+  // no variable
+  return false;
 }
 
-Variable Context::get_var(VarType v1, string func_name) {
+vector<Variable> Context::get_vars(VarType v1, string func_name) {
   vector<int> idx;
   Scope* func_scope = get_func_scope(func_name);
-  if (func_scope) {
-    int lack = func_scope->get_vars(idx, 1, v1);
-    if (lack > 0) {
-      return Variable("", VOID);
-    }
-    return func_scope->vars[idx[0]];
+  vector<Variable> ret;
+  vector<int> idxs;
+  if (!func_scope) {
+    return {};
   }
-  return Variable("", VOID);
+  func_scope->get_vars(idxs, v1);
+  for (auto idx: idxs) {
+    ret.push_back(func_scope->vars[idx]);
+  }
+  return ret;
 }
 
 bool Context::insert_func_norm_expr(const char* func_name, Expr* e) {
