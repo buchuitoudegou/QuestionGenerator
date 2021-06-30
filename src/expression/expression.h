@@ -13,7 +13,8 @@ enum ExprType {
   RET,
   VAR,
   WHILE,
-  FOR
+  FOR,
+  SEL,
 };
 
 enum VarType {
