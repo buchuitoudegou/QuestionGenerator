@@ -9,9 +9,8 @@ using std::ofstream;
 
 int main() {
   srand(time(NULL));
-  // int flags = FUNC_DEF | FUNC_ARTH | ARTH;
-  int flags = ARTH | WHILE_LOOP | FOR_LOOP;
-  Context* ctx = generate_context(flags);
+  uint16_t flags = CMP_ASGN | WHILE | IF | VC_CND | VV_CND | CPLX_CND | NST_BLK;
+  Context* ctx = generate_context(flags, 3, 10, 1.0);
   string code = code_generation(ctx);
   ofstream o_file;
   o_file.open("output.cpp");
