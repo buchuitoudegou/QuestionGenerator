@@ -24,7 +24,7 @@ enum VarType {
 };
 
 enum CompareType {
-  EQUAL, // ==
+  EQUAL=0, // ==
   LARGER, // >
   LESS, // <
   NO_LESS, // >=

@@ -10,15 +10,16 @@ AssignExpr::~AssignExpr() {
   delete right_expr;
 }
 
-BoolExpr::BoolExpr(Variable v, Expr* e, CompareType ct)
-  : Expr(BOOL), v(v), right_expr(e), ct(ct) {}
+BoolExpr::BoolExpr(Expr* e1, Expr* e2, CompareType ct)
+  : Expr(BOOL), left_expr(e1), right_expr(e2), ct(ct) {}
 
 string BoolExpr::stringify() {
-  return v.v_name + " " + stringify_bool_type(ct) + " " + right_expr->stringify();
+  return left_expr->stringify() + " " + stringify_bool_type(ct) + " " + right_expr->stringify();
 }
 
 BoolExpr::~BoolExpr() {
   delete right_expr;
+  delete left_expr;
 }
 
 SelfCompAssignExpr::~SelfCompAssignExpr() {

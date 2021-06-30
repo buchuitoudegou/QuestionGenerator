@@ -13,7 +13,7 @@ public:
 
 class ElseExpr: public Expr {
 public:
-  ElseExpr() = default;
+  ElseExpr(): Expr(SEL) {};
   string stringify();
 };
 

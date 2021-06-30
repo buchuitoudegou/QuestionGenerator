@@ -28,9 +28,9 @@ SelfCompExpr::SelfCompExpr(Variable v, CompType t, bool is_back):
 
 string SelfCompExpr::stringify() {
   if (is_back) {
-    return v.v_name + " " + stringify_comp(comp_type) + stringify_comp(comp_type);
+    return v.v_name + stringify_comp(comp_type) + stringify_comp(comp_type);
   } else {
-    return stringify_comp(comp_type) + stringify_comp(comp_type) + " " + v.v_name;
+    return stringify_comp(comp_type) + stringify_comp(comp_type) + v.v_name;
   }
 }
 

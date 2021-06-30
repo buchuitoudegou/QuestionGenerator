@@ -12,7 +12,8 @@
 #define C_CND 0x80    // constant condition
 #define VC_CND 0x100  // variable-constant condition
 #define VV_CND 0x200  // variable-variable condition
-#define NST_BLK 0x400 // nested block
+#define VE_CND 0x400  // variable-expr condition
+#define NST_BLK 0x800 // nested block
 
 // question generation: question form
 #define MCQ 0x1

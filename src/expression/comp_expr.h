@@ -16,7 +16,7 @@ class ConstExpr: public Expr {
 public:
   ConstExpr(const char* c);
   string stringify();
-  const char* c;
+  string c;
 };
 
 class CompExpr: public Expr {
