@@ -24,11 +24,13 @@ enum VarType {
 };
 
 enum CompareType {
-  EQUAL=0, // ==
-  LARGER, // >
-  LESS, // <
-  NO_LESS, // >=
+  EQUAL=0,   // ==
+  LARGER,    // >
+  LESS,      // <
+  NO_LESS,   // >=
   NO_LARGER, // <=
+  OR,        // ||
+  AND        // &&
 };
 
 enum CompType {
