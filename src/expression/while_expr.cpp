@@ -7,5 +7,5 @@ WhileExpr::~WhileExpr() {
 }
 
 string WhileExpr::stringify() {
-  return "while(" + expr->stringify() + ")" + " {\n";
+  return "while(" + expr->stringify() + ")" + " {";
 }

@@ -6,7 +6,7 @@ ForExpr::ForExpr(Expr* in, Expr* c, Expr* it):
 string ForExpr::stringify() {
   return "for (" + init->stringify() + "; "
     + ctrl->stringify() + "; "
-    + iter->stringify() + ") {\n";
+    + iter->stringify() + ") {";
 }
 
 ForExpr::~ForExpr() {
