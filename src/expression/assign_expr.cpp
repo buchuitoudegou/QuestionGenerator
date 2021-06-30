@@ -20,3 +20,13 @@ string BoolExpr::stringify() {
 BoolExpr::~BoolExpr() {
   delete right_expr;
 }
+
+SelfCompAssignExpr::~SelfCompAssignExpr() {
+  if (right_expr) {
+    delete right_expr;
+  }
+}
+
+string SelfCompAssignExpr::stringify() {
+  return v1.v_name + " " + stringify_comp(ct) + "= " + right_expr->stringify();
+}

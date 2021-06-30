@@ -14,6 +14,17 @@ public:
   virtual ~AssignExpr();
 };
 
+class SelfCompAssignExpr: public Expr {
+public:
+  Variable v1;
+  Expr* right_expr;
+  CompType ct;
+  string stringify();
+  SelfCompAssignExpr(Variable v, CompType ct, Expr* e):
+  Expr(ASSIGN), v1(v), ct(ct), right_expr(e) {};
+  virtual ~SelfCompAssignExpr();
+};
+
 // variable > / < / == Expr
 class BoolExpr: public Expr {
 public:

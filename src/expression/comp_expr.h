@@ -31,12 +31,11 @@ public:
 
 class SelfCompExpr: public Expr {
 public:
-  SelfCompExpr(Variable v, CompType t, Expr* e1);
-  SelfCompExpr(Variable v, CompType t, const char* constant);
-  virtual ~SelfCompExpr();
+  SelfCompExpr(Variable v, CompType t);
+  SelfCompExpr(Variable v, CompType t, bool is_back);
+  virtual ~SelfCompExpr()=default;
   string stringify();
-  Expr* e;
-  string constant;
+  bool is_back;
   CompType comp_type;
   Variable v;
 };
