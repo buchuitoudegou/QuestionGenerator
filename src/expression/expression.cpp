@@ -40,7 +40,7 @@ VarType Expr::get_ret_type() {
 }
 
 bool need_semicolon(ExprType type) {
-  if (type == WHILE || type == FOR || type == FUNC) {
+  if (type == WHILE || type == FOR || type == FUNC || type == SEL) {
     return false;
   } else {
     return true;

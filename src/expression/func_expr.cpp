@@ -17,7 +17,7 @@ string FuncExpr::stringify() {
     args_list += stringify_vartype(args[i]) + " " + arg_name;
   }
   args_list += ")";
-  code += func_name + args_list + " {\n";
+  code += func_name + args_list + " {";
   return code;
 }
 

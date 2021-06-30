@@ -51,6 +51,8 @@ string Scope::code_gen() {
     code += exprs[i]->stringify();
     if (need_semicolon(exprs[i]->type)) {
       code += ";\n";
+    } else {
+      code += "\n";
     }
     map<Expr*, Scope*>::iterator it = child_scopes.find(exprs[i].get());
     if (it != child_scopes.end()) {
