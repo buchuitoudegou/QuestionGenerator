@@ -51,7 +51,7 @@ public:
   // define new variable in function
   bool def_func_var(string func_name, VarType vt, string vn="");
   // insert a function return expression that returns a variable
-  bool insert_func_ret_expr(const char* func_name, const char* v_name="a");
+  bool insert_func_ret_expr(const char* func_name, RetExpr* ret_expr);
   // insert a normal expression to function
   bool insert_func_norm_expr(const char* func_name, Expr* e);
   // insert a while block to function

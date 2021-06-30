@@ -133,37 +133,8 @@ bool Context::def_func_var(string func_name, VarType vt, string vn) {
   return true;
 }
 
-bool Context::insert_func_ret_expr(const char* func_name, const char* v_name) {
-  Scope* func_scope = NULL;
-  VarType ret_type = INT;
-  func_scope = get_func_scope(func_name);
-  if (!func_scope) {
-    return false;
-  }
-  if (ret_type == VOID) {
-    // the function are supposed to return nothing
-    return true;
-  }
-  // find variables
-  vector<int> idxs;
-  func_scope->get_vars(idxs, ret_type);
-  if (idxs.size() > 0) {
-    int target = -1;
-    for (auto idx: idxs) {
-      if (func_scope->vars[idx].v_name == v_name) {
-        target = idx;
-        break;
-      }
-    }
-    if (target != -1) {
-      func_scope->gen_ret_expr(target);
-      return true;
-    } else {
-      return false;
-    }
-  }
-  // no variable
-  return false;
+bool Context::insert_func_ret_expr(const char* func_name, RetExpr* ret_expr) {
+  return insert_func_norm_expr(func_name, ret_expr);
 }
 
 vector<Variable> Context::get_vars(VarType v1, string func_name) {
