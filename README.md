@@ -1,4 +1,17 @@
 # Question Generator
+
+## dependencies
+1. [toml11](https://github.com/ToruNiina/toml11)
+
+## prepare
+```
+git clone https://github.com/ToruNiina/toml11.git
+cd toml11
+mkdir build & cd build
+cmake ..
+make & make install
+```
+
 ## run
 ```
 mkdir build
