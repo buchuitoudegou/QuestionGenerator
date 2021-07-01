@@ -3,5 +3,5 @@
 string code_generation(Context* context) {
   // todo: generate different code type regarding the input condition
   // modify the generated code from context
-  return context->code_gen();
+  return "#include <stdio.h>\n" + context->code_gen();
 }

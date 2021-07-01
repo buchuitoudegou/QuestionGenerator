@@ -1,0 +1,16 @@
+statement_cnt      = 2
+variable_cnt       = 2
+variable_app_ratio = 1.0
+
+IF       = 0 # if expression
+WHILE    = 0 # while expression
+FOR      = 0 # for expression
+CMP_ASGN = 0 # compound calculation
+CPLX_CND = 0 # complex condition (&& ||)
+SLF_INC  = 0 # self increment/decrement
+RDT_STM  = 0 # reduncdant statement
+C_CND    = 0 # constant condition
+VC_CND   = 0 # variable-constant condition
+VV_CND   = 0 # variable-variable condition
+VE_CND   = 0 # variable-expr condition
+NST_BLK  = 0 # nested block
