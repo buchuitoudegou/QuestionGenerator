@@ -1,16 +1,16 @@
-statement_cnt      = 2
-variable_cnt       = 2
-variable_app_ratio = 1.0
+statement_cnt      = 2   # the count of the statement
+variable_cnt       = 2   # the count of the variables
+variable_app_ratio = 1.0 # the rate of variables that are involved in calculation
 
-IF       = 0 # if expression
-WHILE    = 0 # while expression
+IF       = 1 # if expression
+WHILE    = 1 # while expression
 FOR      = 0 # for expression
-CMP_ASGN = 0 # compound calculation
-CPLX_CND = 0 # complex condition (&& ||)
-SLF_INC  = 0 # self increment/decrement
-RDT_STM  = 0 # reduncdant statement
+CMP_ASGN = 1 # compound calculation
+CPLX_CND = 1 # complex condition (&& ||)
+SLF_INC  = 1 # self increment/decrement
+RDT_STM  = 0 # redundant statement
 C_CND    = 0 # constant condition
-VC_CND   = 0 # variable-constant condition
+VC_CND   = 1 # variable-constant condition
 VV_CND   = 0 # variable-variable condition
 VE_CND   = 0 # variable-expr condition
-NST_BLK  = 0 # nested block
+NST_BLK  = 1 # nested block
