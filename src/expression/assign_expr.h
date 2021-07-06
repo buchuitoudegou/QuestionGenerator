@@ -21,7 +21,7 @@ public:
   CompType ct;
   string stringify();
   SelfCompAssignExpr(Variable v, CompType ct, Expr* e):
-  Expr(ASSIGN), v1(v), ct(ct), right_expr(e) {};
+  Expr(ASSIGN), v1(v), right_expr(e), ct(ct) {};
   virtual ~SelfCompAssignExpr();
 };
 

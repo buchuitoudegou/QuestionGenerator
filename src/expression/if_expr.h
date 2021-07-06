@@ -5,7 +5,7 @@
 
 class IfExpr: public Expr {
 public:
-  IfExpr(Expr* e): expr(e), Expr(SEL) {}
+  IfExpr(Expr* e): Expr(SEL), expr(e) {}
   virtual ~IfExpr();
   string stringify();
   Expr* expr;
