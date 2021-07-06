@@ -25,8 +25,8 @@ string stringify_bool_type(CompareType ct) {
     case EQUAL: return "==";
     case LARGER: return ">";
     case LESS: return "<";
-    case NO_LARGER: return ">=";
-    case NO_LESS: return "<=";
+    case NO_LARGER: return "<=";
+    case NO_LESS: return ">=";
     case OR: return "||";
     case AND: return "&&";
   }
