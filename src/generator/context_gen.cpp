@@ -106,6 +106,8 @@ Context* generate_context(uint16_t flags, int var_num, int st_num, double app_ra
       ctx->insert_func_norm_expr("main", arth);
     }
   }
+  Expr* output = new OutExpr(vars);
+  ctx->insert_func_norm_expr("main", output);
   ctx->insert_func_ret_expr("main", new RetExpr("0"));
   return ctx;
 }

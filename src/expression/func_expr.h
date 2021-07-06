@@ -1,6 +1,7 @@
 #ifndef __FUNC_EXPR_H__
 #define __FUNC_EXPR_H__
 #include "expression.h"
+#include "variable.h"
 #include <vector>
 
 using std::vector;
@@ -22,5 +23,12 @@ public:
   RetExpr(const char* v_name);
   string stringify();
   string v_name;
+};
+
+class OutExpr: public Expr {
+public:
+  OutExpr(const vector<Variable>& outs): Expr(OUTPUT), output(outs) {}
+  string stringify();
+  vector<Variable> output;
 };
 #endif

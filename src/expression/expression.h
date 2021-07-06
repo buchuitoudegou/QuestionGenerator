@@ -15,6 +15,7 @@ enum ExprType {
   WHILE,
   FOR,
   SEL,
+  OUTPUT
 };
 
 enum VarType {

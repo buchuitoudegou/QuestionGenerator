@@ -34,3 +34,24 @@ RetExpr::RetExpr(const char* n): v_name(n), Expr(RET) {}
 string RetExpr::stringify() {
   return "return " + v_name;
 }
+
+string OutExpr::stringify() {
+  string code("printf(\""), params;
+  for (auto& var: output) {
+    if (params.size() != 0) {
+      params.push_back(',');
+    }
+    params += var.v_name;
+    if (var.v_type == INT) {
+      code += "%d ";
+    } else {
+      code += "%f ";
+    }
+  }
+  code.pop_back();
+  code += "\\";
+  code += "n";
+  code += "\",";
+  params += ")";
+  return code + params;
+}
