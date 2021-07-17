@@ -4,8 +4,6 @@
 #include <string>
 #include "expression.h"
 
-using std::string;
-
 struct Variable {
   string v_name;
   VarType v_type;

@@ -5,9 +5,6 @@
 #include <vector>
 #include <fstream>
 
-using std::ofstream;
-using std::vector;
-
 string code_generation(Context* context);
 
 #endif

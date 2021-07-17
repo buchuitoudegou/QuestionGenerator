@@ -17,10 +17,9 @@ using std::vector;
 using std::string;
 using std::map;
 using std::shared_ptr;
-using std::make_shared;
 
 class Scope {
-public:
+public:  
   vector<Variable> vars;
   vector<shared_ptr<Expr> > exprs;
   vector<shared_ptr<Scope> > scopes;
