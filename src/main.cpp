@@ -9,6 +9,9 @@
 #include <fcntl.h>
 #include <iterator>
 
+#include <sys/wait.h>
+#include <sys/types.h>
+
 using std::istream_iterator;
 using std::ofstream;
 using std::ifstream;

@@ -2,7 +2,7 @@
 #define __CONTEXT_GEN_H__
 
 #include <map>
-
+#include <assert.h>
 #include "../context/context.h"
 #include "../context/condition.h"
 #include "../expression/assign_expr.h"
