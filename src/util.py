@@ -95,6 +95,7 @@ def conv_comp_to_ast(ct):
     return 'append'
   if ct == 'FUNC_CALL':
     return 'func_call'
+  return ct
 
 def stringify_ast(ast_op):
   if isinstance(ast_op, ast.Add):

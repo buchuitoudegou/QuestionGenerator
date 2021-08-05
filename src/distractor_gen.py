@@ -2,7 +2,6 @@ import ast
 from os import replace
 import random
 import util
-import copy
 
 def random_mod_str(string):
   s_arr = []
@@ -23,12 +22,12 @@ def random_mod_str(string):
 class ConstTrans(ast.NodeTransformer):
   def visit_Constant(self, node):
     is_replace = random.randint(0, 1)
-    if is_replace and isinstance(node.value, int):
+    if is_replace and type(node.value) ==  int:
       return ast.Constant(value=random.randint(-1, 1) + node.value, kind=None)
-    if is_replace and isinstance(node.value, str):
+    if is_replace and type(node.value) ==  str:
       new_string = random_mod_str(node.value)
       return ast.Constant(value=new_string, kind=None)
-    if is_replace and isinstance(node.value, bool):
+    if is_replace and type(node.value) ==  bool:
       return ast.Constant(value=random.randint(0, 1) == 1, kind=None)
     return node
 
@@ -125,11 +124,11 @@ def modify_range(stmt):
       if isinstance(arg, ast.Constant):
         val = arg.value
         if isinstance(val, int):
-          iter_stmt.args[idx] = ast.Constant(value=random.randint(0, 2) + val, kind=None)
+          iter_stmt.args[idx] = ast.Constant(value=random.randint(-2, 2) + val, kind=None)
       if isinstance(arg, ast.Call):
         iter_stmt.args[idx] = ast.BinOp(
           left=arg,
           op=ast.Sub(),
-          right=ast.Constant(value=random.randint(1, 2), kind=None)
+          right=ast.Constant(value=random.randint(-2, 2), kind=None)
         )
   stmt.iter = iter_stmt

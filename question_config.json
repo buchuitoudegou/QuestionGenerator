@@ -13,13 +13,13 @@
       "body": [
         {
           "st": "EVAL",
-          "payload": "print('abc')"
+          "payload": "print(a)"
         }
       ],
       "else": [
         {
           "st": "EVAL",
-          "payload": "print('def')"
+          "payload": "print(b)"
         }
       ]
     }

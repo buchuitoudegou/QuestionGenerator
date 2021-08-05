@@ -77,6 +77,18 @@
     "ast": "Call",
     "return": "[STR_LIST_EXPR]"
   },
+  "NUM_LIST_APPEND": {
+    "template": ["[NUM_LIST_EXPR]", "[NUM_EXPR]"],
+    "op": "LIST_APPEND",
+    "ast": "Call",
+    "return": "[NUM_LIST_EXPR]"
+  },
+  "NUM_LIST_APPEND_LOOP": {
+    "template": ["[NUM_LIST_EXPR]", "[LOOP_VAR]"],
+    "op": "LIST_APPEND",
+    "ast": "Call",
+    "return": "[NUM_LIST_EXPR]"
+  },
   "NUM_LOOP_VAR_PLUS": {
     "template": ["[LOOP_VAR]", "[NUM_EXPR]"],
     "op": "PLUS",
