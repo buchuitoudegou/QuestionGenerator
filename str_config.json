@@ -12,10 +12,21 @@
       "iter": "[STR_EXPR]",
       "body": [
         {
-          "st": "METHOD_CALL",
-          "method_call": ["STR_LOOP_IDX", "STR_UPPERCASE"]
+          "st": "ASSIGN",
+          "ops": ["STR_UPPERCASE"]
         }
       ]
+    },
+    {
+      "st": "EVAL",
+      "payload": "print(a)"
     }
-  ]
+  ],
+  "distractor": {
+    "cnt": 2,
+    "const": 1,
+    "assignment": 0,
+    "branch_sel": 0,
+    "for": 0
+  }
 }

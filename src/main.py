@@ -7,14 +7,8 @@ import argparse
 import materialize
 import distractor_gen
 import json
+import sys
 import subprocess
-
-dis_config = {
-  "const": True,
-  "assignment": True,
-  "branch_sel": True,
-  "for": True
-}
 
 def cmdparser():
   parser = argparse.ArgumentParser(description='AST Code Generator')
@@ -22,13 +16,20 @@ def cmdparser():
   args = parser.parse_args()
   return args
 
-def code_evaluate(tree, in_file):
-  print(f"start evaluating: {in_file}")
+def code_evaluate(tree):
   mat = materialize.PyGenerator("python", tree)
   code = mat.generate_code()
-  with open(in_file, 'w') as f:
+  with open('dst/temp.py', 'w+') as f:
     f.write(code)
     f.flush()
+  try:
+    popen = subprocess.Popen(["python3", "dst/temp.py"], stdout=subprocess.PIPE)
+    out, _ = popen.communicate(timeout=2)
+    return out.decode(), code
+  except:
+    sys.stdout.flush()
+    popen.kill()
+    return '', code
   
   
 def init_exprs():
@@ -156,15 +157,25 @@ if __name__ == "__main__":
   config_path = cmdparser().path
   config = json.load(open(config_path))
   q_conf = config["question"]
+  dis_config = config["distractor"]
   del config["question"]
-  gen_config = gen_config(q_conf, len(q_conf), config)
-  tree = generator.gen_fixed_ast(gen_config)
-  ret = code_evaluate(tree, "dst/target.py")
+  del config["distractor"]
+  options = []
+  while True:
+    code_config = gen_config(q_conf, len(q_conf), config)
+    tree = generator.gen_fixed_ast(code_config)
+    ret, code = code_evaluate(tree)
+    if ret != '':
+      options.append(ret)
+      with open('dst/target.py', 'w') as f:
+        f.write(code)
+        f.flush()
+      break
+  print(options)
   # generate distractor
-  cnt = 30
-  idx = 0
-  while cnt > 0:
+  while len(options) < dis_config["cnt"]:
     distractor_gen.gen_distractor(tree, dis_config)
-    ret = code_evaluate(tree, f"dst/target-{idx}.py")
-    idx += 1
-    cnt -= 1
+    ret, _ = code_evaluate(tree)
+    if ret != '' and ret not in options:
+      options.append(ret)
+      print(options)

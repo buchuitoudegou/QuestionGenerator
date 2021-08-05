@@ -181,7 +181,6 @@ class TemplateFormulator():
     return stmt
 
   def method_call(self, stmt_details, exprs):
-    stmt_type = stmt_details["st"]
     right_ops = self.get_op_list(stmt_details["method_call"])
     final_expr = self.combine_expr(right_ops, exprs)
     return ast.Expr(value=final_expr)

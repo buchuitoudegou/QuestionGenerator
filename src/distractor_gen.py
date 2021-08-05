@@ -7,14 +7,14 @@ import copy
 def random_mod_str(string):
   s_arr = []
   for c in string:
-    is_change = random.randint()
+    is_change = random.randint(0, 1)
     if not is_change:
       s_arr.append(c)
       continue
     if c.isdigit():
       s_arr.append(str(random.randint(-1, 1) + int(c)))
     else:
-      if c.isuppercase():
+      if c.isupper():
         s_arr.append(c.lower())
       else:
         s_arr.append(c.upper())
@@ -28,6 +28,8 @@ class ConstTrans(ast.NodeTransformer):
     if is_replace and isinstance(node.value, str):
       new_string = random_mod_str(node.value)
       return ast.Constant(value=new_string, kind=None)
+    if is_replace and isinstance(node.value, bool):
+      return ast.Constant(value=random.randint(0, 1) == 1, kind=None)
     return node
 
 class RewriteOp(ast.NodeTransformer):
@@ -62,6 +64,18 @@ class RewriteOp(ast.NodeTransformer):
   def visit_NotEq(self, node):
     return self.replace_one(node)
 
+class RewriteName(ast.NodeTransformer):
+  def __init__(self, replace_list):
+    ast.NodeTransformer.__init__(self)
+    self.replace_list = replace_list
+  
+  def visit_Name(self, node):
+    is_replace = random.randint(0, 1)
+    if is_replace:
+      return util.rand_sel(self.replace_list)
+    else:
+      return node
+
 def gen_distractor(ast_tree, config):
   if config["const"]:
     t = ConstTrans()
@@ -81,9 +95,9 @@ def gen_distractor(ast_tree, config):
   return ast_tree
 
 def shuffle_assign(assign_stmt):
-  if not isinstance(assign_stmt.value, ast.BinOp):
-    return
-  target = assign_stmt.value
+  target = None
+  if isinstance(assign_stmt.value, ast.BinOp):
+    target = assign_stmt.value
   while (isinstance(target, ast.BinOp)):
     # randomly replace the operator
     is_replace = random.randint(0, 1) == 1
@@ -96,6 +110,12 @@ def shuffle_assign(assign_stmt):
 def shuffle_test(stmt):
   rewrite = RewriteOp()
   rewrite.visit(stmt.test)
+  name_nodes = []
+  for node in ast.walk(stmt.test):
+    if isinstance(node, ast.Name):
+      name_nodes.append(node)
+  name_rewrite = RewriteName(name_nodes)
+  name_rewrite.visit(stmt.test)
 
 def modify_range(stmt):
   iter_stmt = stmt.iter

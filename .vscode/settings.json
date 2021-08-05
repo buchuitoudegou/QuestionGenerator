@@ -1,5 +1,5 @@
 {
-  "python.pythonPath": "/Users/junfengliu/anaconda3/bin/python",
+  "python.pythonPath": "/usr/bin/python3",
   "files.associations": {
     "*.schema": "json",
     "ostream": "cpp",
