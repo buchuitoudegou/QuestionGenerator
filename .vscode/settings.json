@@ -1,3 +1,9 @@
 {
-  "python.pythonPath": "/Users/junfengliu/anaconda3/bin/python"
+  "python.pythonPath": "/Users/junfengliu/anaconda3/bin/python",
+  "files.associations": {
+    "*.schema": "json",
+    "ostream": "cpp",
+    "ios": "cpp",
+    "iterator": "cpp"
+  }
 }

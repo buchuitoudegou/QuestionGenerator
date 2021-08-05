@@ -22,19 +22,14 @@ def cmdparser():
   args = parser.parse_args()
   return args
 
-def code_evaluate(tree):
-  print("start evaluating")
+def code_evaluate(tree, in_file):
+  print(f"start evaluating: {in_file}")
   mat = materialize.PyGenerator("python", tree)
   code = mat.generate_code()
-  with open('target.py', 'w') as f:
+  with open(in_file, 'w') as f:
     f.write(code)
-  try:
-    finish = subprocess.run(["python3", "target.py"], capture_output=True, timeout=3)
-    print("finish evaluating")
-    return finish.stdout.decode()
-  except:
-    print("fail evaluating...")
-    return None
+    f.flush()
+  
   
 def init_exprs():
   exprs = {
@@ -164,14 +159,12 @@ if __name__ == "__main__":
   del config["question"]
   gen_config = gen_config(q_conf, len(q_conf), config)
   tree = generator.gen_fixed_ast(gen_config)
-  ans = code_evaluate(tree)
+  ret = code_evaluate(tree, "dst/target.py")
   # generate distractor
-  options = [ans]
-  cnt = 3
+  cnt = 30
+  idx = 0
   while cnt > 0:
     distractor_gen.gen_distractor(tree, dis_config)
-    new_ans = code_evaluate(tree)
-    if new_ans != None and new_ans not in options:
-      options.append(new_ans)
-      cnt -= 1
-      print(options)
+    ret = code_evaluate(tree, f"dst/target-{idx}.py")
+    idx += 1
+    cnt -= 1
