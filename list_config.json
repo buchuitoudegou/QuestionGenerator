@@ -1,0 +1,38 @@
+{
+  "var_cnt": 0, 
+  "const_cnt": 2, 
+  "num_cnt": 0, 
+  "str_cnt": 0,
+  "bool_cnt": 0,
+  "num_list_cnt": 0, 
+  "str_list_cnt": 0,
+  "question": [
+    {
+      "st": "DECL",
+      "var_name": "a",
+      "var_type": "[NUM_EXPR]",
+      "value": "a = 3"
+    },
+    {
+      "st": "WHILE",
+      "test": ["PLUS", "EQUAL"],
+      "body": [
+        {
+          "st": "AUGASSIGN_ADD",
+          "ops": ["MINUS", "MUL"],
+          "dst": "[NUM_EXPR]"
+        },
+        {
+          "st": "EVAL",
+          "payload": "print(a)"
+        }
+      ],
+      "else": [
+        {
+          "st": "EVAL",
+          "payload": "print(0)"
+        }
+      ]
+    }
+  ]
+}

@@ -1,105 +1,91 @@
 import ast
 from random import randint
-from typing import Generator
-import expr
+import random
+import string
+import util
+import statement
 import astunparse
-import materialize
-
-IF       = 0x1   # if expression
-WHILE    = 0x2   # while expression
-FOR      = 0x4   # for expression
-CMP_ASGN = 0x8   # compound calculation
-CPLX_CND = 0x10  # complex condition (&& ||)
-SLF_INC  = 0x20  # self increment/decrement
-RDT_STM  = 0x40  # reduncdant statement
-C_CND    = 0x80  # constant condition
-VC_CND   = 0x100 # variable-constant condition
-VV_CND   = 0x200 # variable-variable condition
-VE_CND   = 0x400 # variable-expr condition
-NST_BLK  = 0x800 # nested block
 
 def gen_root():
-  # return ast.parse('while a > 1:\n  a -= 1')
   return ast.Module(body=[], type_ignores=[])
 
-def insert_expr_to_scope(expr, target):
-  target.body.append(expr)
+def gen_string(size=6, chars=string.ascii_lowercase + string.digits + string.ascii_uppercase):
+  return ''.join(random.choice(chars) for _ in range(size))
 
-def gen_arth(vars, is_comp):
-  arg_num = randint(2, 4)
-  is_scomp = is_comp and (randint(0, 1) == 1)
-  prev = None
-  for _i in range(0, arg_num):
-    is_const = randint(0, 1)
-    rand_var = vars[randint(0, len(vars)-1)]
-    temp = None
-    if is_const:
-      temp = ast.Constant(value=randint(1, 20), kind=None)
-    else:
-      temp = ast.Name(id=rand_var)
-    if prev == None:
-      prev = temp
-    else:
-      op = expr.conv_comp_to_ast(expr.rand_comp())
-      prev = ast.BinOp(left=prev, op=op, right=temp)
-  dst = vars[randint(0, len(vars)-1)]
-  if is_scomp:
-    op = expr.conv_comp_to_ast(expr.rand_comp())
-    return ast.AugAssign(target=ast.Name(id=dst), op=op, value=prev)
-  else:
-    return ast.Assign(targets=[ast.Name(id=dst)], value=prev, type_comment=None)
+def gen_value(type):
+  if type == "Constant":
+    value = randint(-20, 20)
+  elif type == "Str":
+    value = gen_string()
+  elif type == "Bool":
+    value = False if randint(0, 1) else True
+  return value
 
-def gen_while(vars, cond_type):
-  expr = ast.While(test=None, body=[], orelse=[])
-  comp = ast.Compare(left=None, ops=[], comparators=[])
-  if randint(0, 1) == 1:
-    comp.ops.append(ast.Gt())
-  else:
-    comp.ops.append(ast.GtE())
-  if cond_type == VC_CND:
-    comp.comparators.append(ast.Constant(value=randint(0, 20), kind=None))
-    v_name = vars[randint(0, len(vars)-1)]
-    comp.left = ast.Name(id=v_name)
-  else:
-    v1 = vars[randint(0, len(vars)-1)]
-    v2 = vars[randint(0, len(vars)-1)]
-    comp.comparators.append(ast.Name(id=v2))
-    comp.left = ast.Name(id=v1)
-  expr.test = comp
-  expr.body.append(ast.AugAssign(target=ast.Name(id=v_name), op=ast.Sub(), value=ast.Constant(value=1, kind=None)))
-  return expr
+def gen_payload(var_detail):
+  if var_detail["type"] == "Constant" or var_detail["type"] == "Str" or var_detail["type"] == "Bool":
+    payload = {"value": var_detail["val"], "kind": None}
+  if var_detail["type"] == "List":
+    payload = {"elts": []}
+    for ele_type in var_detail["type_of_eles"]:
+      payload["elts"].append(util.conv_var_to_ast("Constant")(value=gen_value(ele_type), kind=None))
+  if var_detail["type"] == "Dict":
+    payload = {"keys": [], "values": []}
+    for ele_type in var_detail["type_of_keys"]:
+      payload["keys"].append(util.conv_var_to_ast("Constant")(value=gen_value(ele_type), kind=None))
+    for ele_type in var_detail["type_of_vals"]:
+      payload["values"].append(util.conv_var_to_ast("Constant")(value=gen_value(ele_type), kind=None))
+  return payload
 
-def gen_var(vars):
-  v = ord('a') + len(vars)
-  v = str(chr(v))
+def gen_var(vars, var_types, var_detail, name=''):
+  if name == '':
+    v = ord('a') + len(vars)
+    v = str(chr(v))
+  else:
+    v = name
   vars.append(v)
-  return ast.Assign(targets=[ast.Name(id=v)], value=ast.Constant(value=randint(-20, 20), kind=None), type_comment=None)
+  var_types[v] = var_detail["type"]
+  is_rand = var_detail["type"] == "Constant" and var_detail["val"] == "rand"
+  if is_rand:
+    return ast.Assign(targets=[ast.Name(id=v)], value=ast.Constant(value=randint(-20, 20), kind=None), type_comment=None)
+  else:
+    val = util.conv_var_to_ast(var_detail["type"])
+    payload = gen_payload(var_detail)
+    return ast.Assign(targets=[ast.Name(id=v)], value=val(**payload))
 
-def gen_for():
-  # declare a new temp var: _i
-  for_stmt = ast.For(target=ast.Name(id='_i'), iter=ast.Call(func=ast.Name(id='range'), args=[
-    ast.Constant(value=0, kind=None), ast.Constant(value=randint(0, 10), kind=None)
-  ], keywords=[]), body=[], orelse=[])
-  return for_stmt
+def gen_statement(stmt_detail, vars, var_types):
+  stmt = None
+  if stmt_detail["type"] == "Arth":
+    stmt = statement.gen_arth(vars, var_types, stmt_detail["arg_num"], stmt_detail["is_self_comp"])
+  elif stmt_detail["type"] == "While":
+    stmt = statement.gen_while(vars, var_types, stmt_detail["cond_type"])
+    for child in stmt_detail["body"]:
+      child_stmt = gen_statement(child, vars, var_types)
+      stmt.body.append(child_stmt)
+  return stmt
 
-def gen_ast(config):
-  # with open('./template/t1.py') as f:
-  #   tree = ast.parse(f.read())
-  #   print()
+def gen_random_ast(config):
   tree = gen_root()
-  # expr = gen_while()
   vars = []
-  var_expr = gen_var(vars)
-  while_expr = gen_while(vars, VC_CND)
-  insert_expr_to_scope(var_expr, tree)
-  insert_expr_to_scope(while_expr, tree)
-  arth_expr = gen_arth(vars, True)
-  insert_expr_to_scope(arth_expr, while_expr)
-  for_expr = gen_for()
-  insert_expr_to_scope(for_expr, tree)
-  arth_expr = gen_arth(vars + ['_i'], True)
-  insert_expr_to_scope(arth_expr, for_expr)
-  generator = materialize.CppGenerator('c++', tree)
-  print(astunparse.dump(tree))
+  var_types = {}
+  # generate variables
+  for var_detail in config["variables"]["values"]:
+    var_stmt = gen_var(vars, var_types, var_detail)
+    tree.body.append(var_stmt)
+  # generate statments
+  for stmt_detail in config["statements"]["stmt"]:
+    stmt = gen_statement(stmt_detail, vars, var_types)
+    tree.body.append(stmt)
   print(astunparse.unparse(tree))
-  print(generator.generate_code(vars))
+
+def gen_fixed_ast(config):
+  tree = gen_root()
+  vars = []
+  var_types = {}
+  # generate variables
+  for var_detail in config["variables"]["values"]:
+    var_stmt = gen_var(vars, var_types, var_detail, var_detail["name"])
+    tree.body.append(var_stmt)
+  # insert statement
+  for stmt in config["fixed_statements"]["stmt"]:
+    tree.body.append(stmt)
+  return tree

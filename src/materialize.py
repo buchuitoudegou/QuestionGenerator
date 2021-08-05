@@ -1,5 +1,6 @@
 import ast
-import expr
+import astunparse
+import util
 
 class Generator:
   def __init__(self, lang, ast_root):
@@ -70,7 +71,7 @@ class CppGenerator(Generator):
     dst = ast_stmt.target.id
     op = ast_stmt.op
     right = ast_stmt.value
-    return f'{dst} {expr.stringify_ast(op)}= {self.parse_expr(right)};\n'
+    return f'{dst} {util.stringify_ast(op)}= {self.parse_expr(right)};\n'
 
   def parse_for(self, ast_stmt):
     init = ast_stmt.iter.args[0].value
@@ -84,7 +85,7 @@ class CppGenerator(Generator):
 
   def parse_expr(self, ast_expr):
     if isinstance(ast_expr, ast.BinOp):
-      op_str = expr.stringify_ast(ast_expr.op)
+      op_str = util.stringify_ast(ast_expr.op)
       return self.parse_expr(ast_expr.left) + op_str + self.parse_expr(ast_expr.right)
     if isinstance(ast_expr, ast.Constant):
       return str(ast_expr.value)
@@ -94,5 +95,13 @@ class CppGenerator(Generator):
       left = ast_expr.left
       op = ast_expr.ops[0]
       comparator = ast_expr.comparators[0]
-      return self.parse_expr(left) + f' {expr.stringify_ast(op)} ' + self.parse_expr(comparator)
+      return self.parse_expr(left) + f' {util.stringify_ast(op)} ' + self.parse_expr(comparator)
     return ''
+
+class PyGenerator(Generator):
+  def __init__(self, lang, ast_tree):
+    Generator.__init__(self, lang, ast_tree)
+  
+  def generate_code(self):
+    code = astunparse.unparse(self.tree)
+    return code

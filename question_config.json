@@ -1,0 +1,27 @@
+{
+  "var_cnt": 0, 
+  "const_cnt": 0, 
+  "num_cnt": 0, 
+  "str_cnt": 0,
+  "bool_cnt": 3,
+  "num_list_cnt": 0, 
+  "str_list_cnt": 0,
+  "question": [
+    {
+      "st": "IF",
+      "test": ["OR", "AND"],
+      "body": [
+        {
+          "st": "EVAL",
+          "payload": "print('abc')"
+        }
+      ],
+      "else": [
+        {
+          "st": "EVAL",
+          "payload": "print('def')"
+        }
+      ]
+    }
+  ]
+}

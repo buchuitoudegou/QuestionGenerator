@@ -1,0 +1,21 @@
+{
+  "var_cnt": 0, 
+  "const_cnt": 0, 
+  "num_cnt": 0, 
+  "str_cnt": 1,
+  "bool_cnt": 0,
+  "num_list_cnt": 0, 
+  "str_list_cnt": 0,
+  "question": [
+    {
+      "st": "FOR_IDX",
+      "iter": "[STR_EXPR]",
+      "body": [
+        {
+          "st": "METHOD_CALL",
+          "method_call": ["STR_LOOP_IDX", "STR_UPPERCASE"]
+        }
+      ]
+    }
+  ]
+}

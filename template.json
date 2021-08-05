@@ -1,0 +1,98 @@
+{
+  "PLUS": {
+    "template": ["[NUM_EXPR]", "[NUM_EXPR]"],
+    "op": "PLUS",
+    "ast": "BinOp",
+    "return": "[NUM_EXPR]"
+  },
+  "MINUS": {
+    "template": ["[NUM_EXPR]", "[NUM_EXPR]"],
+    "op": "SUB",
+    "ast": "BinOp",
+    "return": "[NUM_EXPR]"
+  },
+  "MUL": {
+    "template": ["[NUM_EXPR]", "[NUM_EXPR]"],
+    "op": "TIMES",
+    "ast": "BinOp",
+    "return": "[NUM_EXPR]"
+  },
+  "DIV": {
+    "template": ["[NUM_EXPR]", "[NUM_EXPR]"],
+    "op": "DIV",
+    "ast": "BinOp",
+    "return": "[NUM_EXPR]"
+  },
+  "MOD": {
+    "template": ["[NUM_EXPR]", "[NUM_EXPR]"],
+    "op": "MOD",
+    "ast": "BinOp",
+    "return": "[NUM_EXPR]"
+  },
+  "NUM_LIST_IDX": {
+    "template": ["[NUM_LIST_EXPR]", "[NUM_EXPR]"],
+    "op": "IDX",
+    "ast": "Subscript",
+    "return": "[NUM_EXPR]"
+  },
+  "LARGER": {
+    "template": ["[NUM_EXPR]", "[NUM_EXPR]"],
+    "op": "LARGER",
+    "ast": "Compare",
+    "return": "[BOOL_EXPR]"
+  },
+  "EQUAL": {
+    "template": ["[NUM_EXPR]", "[NUM_EXPR]"],
+    "op": "EQUAL",
+    "ast": "Compare",
+    "return": "[BOOL_EXPR]"
+  },
+  "LESS_VAR_CONST": {
+    "template": ["[NUM_EXPR_NOCST]", "[CONST_EXPR]"],
+    "op": "LESS",
+    "ast": "Compare",
+    "return": "[BOOL_EXPR]"
+  },
+  "STR_UPPERCASE": {
+    "template": ["[STR_EXPR]"],
+    "op": "STR_UPPERCASE",
+    "ast": "Call",
+    "return": "[STR_EXPR]"
+  },
+  "LOOP_STR_UPPER": {
+    "template": ["[LOOP_VAR]"],
+    "op": "STR_UPPERCASE",
+    "ast": "Call",
+    "return": "[STR_EXPR]"
+  },
+  "STR_LOOP_IDX": {
+    "template": ["[STR_EXPR]", "[LOOP_VAR]"],
+    "op": "IDX",
+    "ast": "Subscript",
+    "return": "[STR_EXPR]"
+  },
+  "STR_LIST_APPEND": {
+    "template": ["[STR_LIST_EXPR]", "[STR_EXPR]"],
+    "op": "LIST_APPEND",
+    "ast": "Call",
+    "return": "[STR_LIST_EXPR]"
+  },
+  "NUM_LOOP_VAR_PLUS": {
+    "template": ["[LOOP_VAR]", "[NUM_EXPR]"],
+    "op": "PLUS",
+    "ast": "BinOp",
+    "return": "[NUM_EXPR]"
+  },
+  "OR": {
+    "template": ["[BOOL_EXPR]", "[BOOL_EXPR]"],
+    "op": "OR",
+    "ast": "BoolOp",
+    "return": "[BOOL_EXPR]"
+  },
+  "AND": {
+    "template": ["[BOOL_EXPR]", "[BOOL_EXPR]"],
+    "op": "AND",
+    "ast": "BoolOp",
+    "return": "[BOOL_EXPR]"
+  }
+}

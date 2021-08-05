@@ -1,10 +1,7 @@
 
-
-def foo():
-    return (1 + 2)
-a = 145
-b = 128
-c = 175
-a = (a / b)
-b += ((b + 1) + c)
-c = (3 + 4)
+a = 3
+while ((1 + a) > 2):
+    a += (a - (a * 2))
+    print(a)
+else:
+    print(-1)
