@@ -95,6 +95,10 @@ def conv_comp_to_ast(ct):
     return 'append'
   if ct == 'FUNC_CALL':
     return 'func_call'
+  if ct == "LIST_POP":
+    return "pop"
+  if ct == "LIST_REMOVE":
+    return "remove"
   return ct
 
 def stringify_ast(ast_op):
@@ -132,6 +136,8 @@ def conv_var_to_ast(vt):
     return ast.Constant
   if vt == 'List':
     return ast.List
+  if vt == "Tuple":
+    return ast.Tuple
 
 def str_to_stmt(st):
   if st == 'ASSIGN':

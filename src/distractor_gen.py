@@ -1,83 +1,12 @@
 import ast
-from os import replace
 import random
 import util
+import ast_transform
 
-def random_mod_str(string):
-  s_arr = []
-  for c in string:
-    is_change = random.randint(0, 1)
-    if not is_change:
-      s_arr.append(c)
-      continue
-    if c.isdigit():
-      s_arr.append(str(random.randint(-1, 1) + int(c)))
-    else:
-      if c.isupper():
-        s_arr.append(c.lower())
-      else:
-        s_arr.append(c.upper())
-  return ''.join(s_arr)
-
-class ConstTrans(ast.NodeTransformer):
-  def visit_Constant(self, node):
-    is_replace = random.randint(0, 1)
-    if is_replace and type(node.value) ==  int:
-      return ast.Constant(value=random.randint(-1, 1) + node.value, kind=None)
-    if is_replace and type(node.value) ==  str:
-      new_string = random_mod_str(node.value)
-      return ast.Constant(value=new_string, kind=None)
-    if is_replace and type(node.value) ==  bool:
-      return ast.Constant(value=random.randint(0, 1) == 1, kind=None)
-    return node
-
-class RewriteOp(ast.NodeTransformer):
-  def replace_one(self, node):
-    is_replace = random.randint(0, 1)
-    replace_set = [ast.Eq, ast.Lt, ast.Gt, ast.GtE, ast.LtE, ast.NotEq]
-    if is_replace:
-      return util.rand_sel(replace_set)()
-    else:
-      return node
-  
-  def visit_Or(self, node):
-    if random.randint(0, 1):
-      return ast.And()
-    else:
-      return node
-  def visit_And(self, node):
-    if random.randint(0, 1):
-      return ast.Or()
-    else:
-      return node
-  def visit_Eq(self, node):
-    return self.replace_one(node)
-  def visit_Lt(self, node):
-    return self.replace_one(node)
-  def visit_Gt(self, node):
-    return self.replace_one(node)
-  def visit_LtE(self, node):
-    return self.replace_one(node)
-  def visit_GtE(self, node):
-    return self.replace_one(node)
-  def visit_NotEq(self, node):
-    return self.replace_one(node)
-
-class RewriteName(ast.NodeTransformer):
-  def __init__(self, replace_list):
-    ast.NodeTransformer.__init__(self)
-    self.replace_list = replace_list
-  
-  def visit_Name(self, node):
-    is_replace = random.randint(0, 1)
-    if is_replace:
-      return util.rand_sel(self.replace_list)
-    else:
-      return node
 
 def gen_distractor(ast_tree, config):
   if config["const"]:
-    t = ConstTrans()
+    t = ast_transform.ConstTrans()
     t.visit(ast_tree)
   for stmt in ast_tree.body:
     if isinstance(stmt, ast.Assign) or isinstance(stmt, ast.AugAssign):
@@ -107,18 +36,18 @@ def shuffle_assign(assign_stmt):
     target = target.right
     
 def shuffle_test(stmt):
-  rewrite = RewriteOp()
+  rewrite = ast_transform.RewriteOp()
   rewrite.visit(stmt.test)
-  name_nodes = []
-  for node in ast.walk(stmt.test):
-    if isinstance(node, ast.Name):
-      name_nodes.append(node)
-  name_rewrite = RewriteName(name_nodes)
-  name_rewrite.visit(stmt.test)
+  # name_nodes = []
+  # for node in ast.walk(stmt.test):
+  #   if isinstance(node, ast.Name):
+  #     name_nodes.append(node)
+  # name_rewrite = ast_transform.RewriteName(name_nodes)
+  # name_rewrite.visit(stmt.test)
 
 def modify_range(stmt):
   iter_stmt = stmt.iter
-  if isinstance(iter_stmt, ast.Call) and iter_stmt.func.id == 'range':
+  if isinstance(iter_stmt, ast.Call) and type(iter_stmt.func) == ast.Name and iter_stmt.func.id == 'range':
     for idx in range(len(iter_stmt.args)):
       arg = iter_stmt.args[idx]
       if isinstance(arg, ast.Constant):

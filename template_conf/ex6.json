@@ -1,0 +1,41 @@
+{
+  "var_cnt": 0, 
+  "const_cnt": 0, 
+  "num_cnt": 0, 
+  "str_cnt": 5,
+  "bool_cnt": 0,
+  "num_list_cnt": 0, 
+  "str_list_cnt": 0,
+  "num_str_dict_cnt": 0,
+  "str_num_dict_cnt": 0,
+  "str_str_dict_cnt": 0,
+  "questions": [
+    {
+      "st": "DECL",
+      "var_type": "[STR_EXPR]",
+      "var_name": "str1",
+      "value": "'{2}, {1} and {0}'"
+    },
+    {
+      "st": "DECL",
+      "var_type": "[STR_EXPR]",
+      "var_name": "str2",
+      "value": "'{0}{1}{0}'"
+    },
+    {
+      "st": "EVAL",
+      "payload": "print(str1.format(a, b, c))"
+    },
+    {
+      "st": "EVAL",
+      "payload": "print(str1.format(d, e))"
+    }
+  ],
+  "distractor": {
+    "cnt": 2,
+    "const": 1,
+    "assignment": 0,
+    "branch_sel": 0,
+    "for": 0
+  }
+}

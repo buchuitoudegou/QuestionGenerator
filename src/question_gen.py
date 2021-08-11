@@ -98,7 +98,10 @@ class TemplateFormulator():
     if len(right_ops) > 0:
       right_op_list = self.get_op_list(right_ops)
       last_ret = self.get(right_ops[-1])["return"]
-      dst = expr_lookup(exprs, last_ret, True)
+      if "dst" in stmt_details:
+        dst = expr_lookup(exprs, stmt_details["dst"], True)
+      else:
+        dst = expr_lookup(exprs, last_ret, True)
       final_expr = self.combine_expr(right_op_list, exprs)
     else:
       dst = expr_lookup(exprs, stmt_details["dst"], True)

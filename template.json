@@ -5,6 +5,12 @@
     "ast": "BinOp",
     "return": "[NUM_EXPR]"
   },
+  "PLUS_STR": {
+    "template": ["[STR_EXPR]", "[STR_EXPR]"],
+    "op": "PLUS",
+    "ast": "BinOp",
+    "return": "[STR_EXPR]"
+  },
   "MINUS": {
     "template": ["[NUM_EXPR]", "[NUM_EXPR]"],
     "op": "SUB",
@@ -17,6 +23,12 @@
     "ast": "BinOp",
     "return": "[NUM_EXPR]"
   },
+  "NUM_MUL_TUPLE": {
+    "template": ["[NUM_EXPR]", "[NUM_TUPLE_EXPR]"],
+    "op": "TIMES",
+    "ast": "BinOp",
+    "return": "[NUM_TUPLE_EXPR]"
+  },
   "DIV": {
     "template": ["[NUM_EXPR]", "[NUM_EXPR]"],
     "op": "DIV",
@@ -25,6 +37,12 @@
   },
   "MOD": {
     "template": ["[NUM_EXPR]", "[NUM_EXPR]"],
+    "op": "MOD",
+    "ast": "BinOp",
+    "return": "[NUM_EXPR]"
+  },
+  "NUM_CONST_MOD": {
+    "template": ["[NUM_EXPR_NOCST]", "[CONST_EXPR]"],
     "op": "MOD",
     "ast": "BinOp",
     "return": "[NUM_EXPR]"
@@ -71,6 +89,12 @@
     "ast": "Subscript",
     "return": "[STR_EXPR]"
   },
+  "NUM_STR_DICT_IDX": {
+    "template": ["[NUM_STR_DICT_EXPR]", "[NUM_EXPR]"],
+    "op": "IDX",
+    "ast": "Subscript",
+    "return": "[STR_EXPR]"
+  },
   "STR_LIST_APPEND": {
     "template": ["[STR_LIST_EXPR]", "[STR_EXPR]"],
     "op": "LIST_APPEND",
@@ -86,6 +110,18 @@
   "NUM_LIST_APPEND_LOOP": {
     "template": ["[NUM_LIST_EXPR]", "[LOOP_VAR]"],
     "op": "LIST_APPEND",
+    "ast": "Call",
+    "return": "[NUM_LIST_EXPR]"
+  },
+  "NUM_LIST_POP": {
+    "template": ["[NUM_LIST_EXPR]", "[NUM_EXPR]"],
+    "op": "LIST_POP",
+    "ast": "Call",
+    "return": "[NUM_LIST_EXPR]"
+  },
+  "NUM_LIST_REMOVE": {
+    "template": ["[NUM_LIST_EXPR]", "[CONST_EXPR]"],
+    "op": "LIST_REMOVE",
     "ast": "Call",
     "return": "[NUM_LIST_EXPR]"
   },

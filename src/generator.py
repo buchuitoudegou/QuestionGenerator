@@ -28,6 +28,10 @@ def gen_payload(var_detail):
     payload = {"elts": []}
     for ele_type in var_detail["type_of_eles"]:
       payload["elts"].append(util.conv_var_to_ast("Constant")(value=gen_value(ele_type), kind=None))
+  if var_detail["type"] == "Tuple":
+    payload = {"elts": []}
+    for ele_type in var_detail["type_of_eles"]:
+      payload["elts"].append(util.conv_var_to_ast("Constant")(value=gen_value(ele_type), kind=None))
   if var_detail["type"] == "Dict":
     payload = {"keys": [], "values": []}
     for ele_type in var_detail["type_of_keys"]:

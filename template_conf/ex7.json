@@ -2,18 +2,21 @@
   "var_cnt": 0, 
   "const_cnt": 0, 
   "num_cnt": 0, 
-  "str_cnt": 1,
+  "str_cnt": 0,
   "bool_cnt": 0,
   "num_list_cnt": 0, 
-  "str_list_cnt": 0,
-  "question": [
+  "str_list_cnt": 1,
+  "num_str_dict_cnt": 0,
+  "str_num_dict_cnt": 0,
+  "str_str_dict_cnt": 0,
+  "questions": [
     {
-      "st": "FOR_IDX",
-      "iter": "[STR_EXPR]",
+      "st": "FOR",
+      "iter": "[STR_LIST_EXPR]",
       "body": [
         {
-          "st": "ASSIGN",
-          "ops": ["STR_UPPERCASE"]
+          "st": "METHOD_CALL",
+          "method_call": ["LOOP_STR_UPPER"]
         }
       ]
     },
@@ -23,7 +26,7 @@
     }
   ],
   "distractor": {
-    "cnt": 2,
+    "cnt": 1,
     "const": 1,
     "assignment": 0,
     "branch_sel": 0,

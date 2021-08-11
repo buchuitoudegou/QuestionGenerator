@@ -1,0 +1,29 @@
+{
+  "var_cnt": 0, 
+  "const_cnt": 0, 
+  "num_cnt": 1, 
+  "str_cnt": 1,
+  "bool_cnt": 0,
+  "num_list_cnt": 0, 
+  "str_list_cnt": 0,
+  "num_str_dict_cnt": 1,
+  "str_num_dict_cnt": 0,
+  "str_str_dict_cnt": 0,
+  "questions": [
+    {
+      "st": "ASSIGN",
+      "ops": ["NUM_STR_DICT_IDX"]
+    },
+    {
+      "st": "EVAL",
+      "payload": "print(b)"
+    }
+  ],
+  "distractor": {
+    "cnt": 2,
+    "const": 1,
+    "assignment": 0,
+    "branch_sel": 0,
+    "for": 0
+  }
+}

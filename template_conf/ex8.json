@@ -1,0 +1,45 @@
+{
+  "var_cnt": 0, 
+  "const_cnt": 2, 
+  "num_cnt": 1, 
+  "str_cnt": 0,
+  "bool_cnt": 0,
+  "num_list_cnt": 0, 
+  "str_list_cnt": 0,
+  "num_str_dict_cnt": 0,
+  "str_num_dict_cnt": 0,
+  "str_str_dict_cnt": 0,
+  "questions": [
+    {
+      "st": "WHILE",
+      "test": ["BOOL_CONST"],
+      "body": [
+        {
+          "st": "IF",
+          "test": ["NUM_CONST_MOD", "EQUAL"],
+          "body": [
+            {
+              "st": "BREAK"
+            }
+          ]
+        },
+        {
+          "st": "EVAL",
+          "payload": "print(a)"
+        },
+        {
+          "st": "AUGASSIGN_ADD",
+          "dst": "[NUM_EXPR]",
+          "ops": []
+        }
+      ]
+    }
+  ],
+  "distractor": {
+    "cnt": 1,
+    "const": 1,
+    "assignment": 0,
+    "branch_sel": 0,
+    "for": 0
+  }
+}

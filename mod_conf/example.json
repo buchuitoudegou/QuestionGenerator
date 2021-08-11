@@ -1,0 +1,10 @@
+{
+  "code_path": "mod_conf/example.py",
+  "distractor": {
+    "cnt": 2,
+    "const": 1,
+    "assignment": 1,
+    "branch_sel": 1,
+    "for": 1
+  }
+}
